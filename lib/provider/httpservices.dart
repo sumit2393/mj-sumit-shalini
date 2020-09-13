@@ -55,7 +55,7 @@ Future<BannerItem> fetchBanners() async {
 
 Future<FProductList> fetchFeaturedProducts(userid) async {
   final response =
-  await http.get(mainUrl + featuredProducts + userid.toString());
+      await http.get(mainUrl + featuredProducts + userid.toString());
   print(response.statusCode);
   print(response.body);
   if (response.statusCode == 200) {
@@ -68,8 +68,9 @@ Future<FProductList> fetchFeaturedProducts(userid) async {
 ///// @@@@@  categories list @@@@@@  ////
 
 Future<Categories> fetchCategories(id, userid, pageno) async {
+  print("pageno$pageno");
   String url = mainUrl + categories + "$id/$userid?page=$pageno";
-
+  print("url===>>$url");
   final response = await http.get(url);
   print(response.statusCode);
   print(response.body);
@@ -164,6 +165,7 @@ Future removeWish(userid, productid) async {
     throw Exception('Failed to load Categories');
   }
 }
+
 Future<Searchmodel> search(product, userid) async {
   final response = await http.get(searchproduct +
       "search_query=" +

@@ -9,14 +9,12 @@ class ProductList {
   }
 
   factory ProductList.fromJson(Map<String, dynamic> json) {
-    print(json);
     String nextpageurl = json["next_page_url"];
     var productlist = json['data'] as List;
     List<PList> productListt = productlist != null
         ? productlist.map((i) => PList.fromJson(i)).toList()
         : null;
 
-    print("PList created");
     return ProductList(data: productListt, next_page_url: nextpageurl);
   }
 }
@@ -82,15 +80,13 @@ class PList {
       this.addedToWishList,
       this.thumbnails});
   factory PList.fromJson(Map<String, dynamic> json) {
-    print(json);
-    print("....-----");
     Image image =
         json['image'] != null ? new Image.fromJson(json['image']) : null;
     var thumbNails = json["thumbnails"] as List;
     List<Thumbnails> thumbnails = thumbNails != null
         ? thumbNails.map((i) => Thumbnails.fromJson(i)).toList()
         : null;
-    print("Images.....");
+
     return PList(
         id: json['id'],
         name: json['name'],

@@ -23,7 +23,8 @@ class ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
     super.initState();
-
+    print("productdata");
+    print(widget.productdata);
     getUserid();
   }
 
@@ -344,7 +345,7 @@ class ProductDetailState extends State<ProductDetail> {
                         SizedBox(
                           height: 6,
                         ),
-                        Text("",
+                        Text(widget.productdata.name,
                             style: TextStyle(fontSize: 8, color: Colors.black))
                       ])
                     ])),
@@ -376,13 +377,12 @@ class ProductDetailState extends State<ProductDetail> {
                     }),
                     quantity({
                       "title": "DIAMOND",
-                      "value":
-                          " | " + widget.productdata.carat.toString() + "ct",
+                      "value": widget.productdata.diamondPieces.toString(),
                       "image": "assets/images/product/diamond.png"
                     }),
                     quantity({
                       "title": "PRODUCT WEIGHT",
-                      "value": "",
+                      "value": widget.productdata.grossWeight,
                       "image": "assets/images/product/weighht.png"
                     }),
                   ],

@@ -29,6 +29,8 @@ class Categories {
     // print('--------All Product--------');
     var next_page_url = json['allproducts']["next_page_url"];
     var allproducts = json['allproducts']['data'] as List;
+    print("allproductslisting$allproducts");
+
     List<Allproducts> allProducts = allproducts != null
         ? allproducts.map((i) => Allproducts.fromJson(i)).toList()
         : null;

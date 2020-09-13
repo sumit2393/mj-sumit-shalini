@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   bool loading = false;
   int _currentPageIndex = 0;
@@ -46,6 +47,7 @@ class _HomeState extends State<Home> {
           print(testimonial)
         });
   }
+
   getUserid() async {
     print("userid function called");
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -61,6 +63,7 @@ class _HomeState extends State<Home> {
           value.productlist.map((e) => print("ewe" + e.name))
         });
   }
+
   makeCall(productid) {
     requestCallback(userid, productid).then((value) {
       if (value["status"] == "success") {
@@ -70,6 +73,7 @@ class _HomeState extends State<Home> {
       }
     });
   }
+
   registerToast(String toast) {
     return Fluttertoast.showToast(
         msg: toast,
@@ -190,7 +194,7 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          Expanded( 
+                          Expanded(
                             child: Container(
                                 margin: EdgeInsets.only(right: 5),
                                 height: 250,
@@ -255,7 +259,8 @@ class _HomeState extends State<Home> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ProductDetail(
-                                        productdata: categorieslist[index])));
+                                          productdata: categorieslist[index],
+                                        )));
                               },
                               child: Container(
                                   margin: EdgeInsets.only(top: 5),
@@ -264,7 +269,8 @@ class _HomeState extends State<Home> {
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                               categorieslist[index]
-                                                  .image.url)))),
+                                                  .image
+                                                  .url)))),
                             )),
                             Padding(
                                 padding: EdgeInsets.only(top: 12, bottom: 2),
@@ -352,7 +358,8 @@ class _HomeState extends State<Home> {
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: CachedNetworkImageProvider(
-                                                testimonial[index].image_path))),
+                                                testimonial[index]
+                                                    .image_path))),
                                   )),
                                   Expanded(
                                       child: Container(
@@ -383,7 +390,7 @@ class _HomeState extends State<Home> {
                                                   color: Theme.of(context)
                                                       .primaryColor),
                                               child: Text(
-                                                  testimonial[index].name,
+                                                testimonial[index].name,
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white,
@@ -424,7 +431,8 @@ class _HomeState extends State<Home> {
                                                         EdgeInsets.symmetric(
                                                             horizontal: 5),
                                                     child: Text(
-                                                      testimonial[index].caption,
+                                                      testimonial[index]
+                                                          .caption,
                                                       maxLines: 3,
                                                       overflow:
                                                           TextOverflow.ellipsis,

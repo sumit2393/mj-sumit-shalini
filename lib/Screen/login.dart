@@ -13,22 +13,23 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
+
 class _LoginState extends State<Login> {
-  String phone ,id;
-  TextEditingController phoneController=TextEditingController();
+  String phone, id;
+  TextEditingController phoneController = TextEditingController();
   @override
   void initState() {
     super.initState();
     phone = "phone";
-
   }
+
   save() async {
-    Map<dynamic,dynamic> rawBody = {
+    Map<dynamic, dynamic> rawBody = {
       "phone": phone,
       "phone": phone,
     };
-    final response = await http.post(
-        "http://portal.mbj.in/api/auth/get-otp", body: rawBody);
+    final response =
+        await http.post("http://portal.mbj.in/api/auth/get-otp", body: rawBody);
     var data = jsonDecode(response.body);
     print(data.toString());
     if (data["status"] == 'success') {
@@ -42,15 +43,17 @@ class _LoginState extends State<Login> {
               child: SimpleDialog(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(left:20,right:20),
+                    margin: EdgeInsets.only(left: 20, right: 20),
                     child: RaisedButton(
-
                       child: Text(
                         "Ok",
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (BuildContext ctx) => LoginMobileOTPScreen()));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext ctx) =>
+                                    LoginMobileOTPScreen()));
                       },
                     ),
                   )
@@ -58,14 +61,14 @@ class _LoginState extends State<Login> {
                 title: Text(message),
               ),
             );
-          }
-      );
+          });
     } else {
       {
         registerToast("You are not an active user. Please contact admin");
       }
     }
   }
+
   registerToast(String toast) {
     return Fluttertoast.showToast(
         msg: toast,
@@ -76,17 +79,10 @@ class _LoginState extends State<Login> {
         textColor: Colors.white);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         child: Stack(
@@ -96,174 +92,171 @@ class _LoginState extends State<Login> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/images/curve.jpg"),
-                    fit: BoxFit.cover
-                ),
+                    fit: BoxFit.cover),
               ),
             ),
-            Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(190),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: ExactAssetImage(
-                                  "assets/images/background_maroon.png"),
-                              fit: BoxFit.cover
+            Column(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(190),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: ExactAssetImage(
+                              "assets/images/background_maroon.png"),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(80),
+                          topRight: Radius.circular(80))),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                    text: "MOBILE NUMBER",
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ))),
                           ),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(80),
-                              topRight: Radius.circular(80))
-                      ),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.all(30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        text: "MOBILE NUMBER",
-                                        style: TextStyle(
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ))),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.all(40),
-                                  child: TextField(
-                                      controller: phoneController,
-                                      keyboardType: TextInputType.number,
-                                      style: TextStyle(
-
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        decorationStyle: TextDecorationStyle.solid,
-                                      ),
-                                      maxLength: 10,
-                                      decoration: new InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.mobile_screen_share,
-                                          color: Colors.white,
-                                          size: 30,
-                                        ),
-                                        counterText: '',
-                                        filled: true,
-                                        hintStyle: new TextStyle(color: Colors.white),
-                                       hintText: "Phone No",
-                                        fillColor: Color.fromRGBO(83, 0, 23, 3.0),
-                                      ),
-                                      onChanged: (input) {
-                                        setState(() {
-                                          phone = input;
-                                        });
-                                      })
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(left: 50, right: 50),
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        text: 'We will send you an ',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: 'One Time Password',
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ),
-                                          TextSpan(
-                                            text: ' on this phone number.',
-                                          ),
-                                        ]),
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.only(left: 160, right: 160),
-                                  child: Divider(
-                                    color: Colors.white,
-                                    thickness: 5,
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              new GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(builder: (context) => Signup()));
-                                  // Navigator.pushNamed(context,Signup().toString());
-                                },
-                                child: Text(
-                                  "Go to register page",
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                              padding: EdgeInsets.all(40),
+                              child: TextField(
+                                  controller: phoneController,
+                                  keyboardType: TextInputType.number,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    //  decoration: TextDecoration.underline,
                                     fontSize: 20,
+                                    decorationStyle: TextDecorationStyle.solid,
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                child: RaisedButton(
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                  child: Container(
-                                    width: screenWidth / 1.40,
-                                    height: 50,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Continue',
-                                          style: TextStyle(color: Colors.black, fontSize: 20),
-                                        ),
-                                      ],
+                                  maxLength: 10,
+                                  decoration: new InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.mobile_screen_share,
+                                      color: Colors.white,
+                                      size: 30,
                                     ),
+                                    counterText: '',
+                                    filled: true,
+                                    hintStyle:
+                                        new TextStyle(color: Colors.white),
+                                    hintText: "Phone No",
+                                    fillColor: Color.fromRGBO(83, 0, 23, 3.0),
                                   ),
-                                  onPressed: () {
-                                    if(phoneController.value.text.length<10) {
-                                        registerToast("Enter 10 digit mobile number");
-                                    }else
-                                        save();
-                                  },
+                                  onChanged: (input) {
+                                    setState(() {
+                                      phone = input;
+                                    });
+                                  })),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(left: 50, right: 50),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                    text: 'We will send you an ',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'One Time Password',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: ' on this phone number.',
+                                      ),
+                                    ]),
+                              )),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                              padding: EdgeInsets.only(left: 160, right: 160),
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 5,
+                              )),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          new GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Signup()));
+                              // Navigator.pushNamed(context,Signup().toString());
+                            },
+                            child: Text(
+                              "Go to register page",
+                              style: TextStyle(
+                                color: Colors.white,
+                                //  decoration: TextDecoration.underline,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            child: RaisedButton(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              child: Container(
+                                width: screenWidth / 1.40,
+                                height: 50,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                              onPressed: () {
+                                if (phoneController.value.text.length < 10) {
+                                  registerToast("Enter 10 digit mobile number");
+                                } else
+                                  save();
+                              },
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
-                ]),
+                ),
+              ),
+            ]),
           ],
         ),
       ),
@@ -275,30 +268,43 @@ class LoginMobileOTPScreen extends StatefulWidget {
   @override
   _LoginMobileOTPScreenState createState() => _LoginMobileOTPScreenState();
 }
+
 class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
-  String phone, otp,id;
+  String phone, otp, id;
   @override
   void initState() {
     super.initState();
   }
-  Otp()async {
+
+  Otp() async {
     Map<dynamic, dynamic> rawBody = {
-      "otp" : otp,
+      "otp": otp,
     };
     print(rawBody);
-    final response = await http.post("http://portal.mbj.in/api/auth/verify-otp-to-login", body: rawBody);
-    var data= jsonDecode(response.body);
+    final response = await http.post(
+        "http://portal.mbj.in/api/auth/verify-otp-to-login",
+        body: rawBody);
+    var data = jsonDecode(response.body);
     print(data);
-    if(data["status"]=='success') {
+    if (data["status"] == 'success') {
       //String user = data['data']['user'];
-      savePref(data["data"]["user"]["id"],data["data"]["user"] ["email"],data["data"]["user"]["name"],data["data"]["user"]["phone"],data["data"]["user"]["dob"],data["data"]["user"]["anniversary_date"]);
-      setState(() {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext ctx) => Initial()));
-      });
+      savePref(
+          data["data"]["user"]["id"],
+          data["data"]["user"]["email"],
+          data["data"]["user"]["name"],
+          data["data"]["user"]["phone"],
+          data["data"]["user"]["dob"],
+          data["data"]["user"]["anniversary_date"]);
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext ctx) => Initial()),
+          (r) => false);
     }
   }
-  savePref(int user_id, String email, String name, String phone,String dob, String anniversary_date ) async {
+
+  savePref(int user_id, String email, String name, String phone, String dob,
+      String anniversary_date) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences?.setBool("isLoggedIn", true);
     preferences.setInt("id", user_id);
@@ -310,7 +316,6 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
     preferences.commit();
   }
 
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -319,149 +324,141 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
-          child: Stack(
+          child: Stack(children: <Widget>[
+            Container(
+                height: 430,
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: new AssetImage("assets/images/curve.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                )),
+            Column(
               children: <Widget>[
-                Container(
-                    height: 430,
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        image: new AssetImage("assets/images/curve.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                Padding(
+                  padding: EdgeInsets.all(190),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[],
+                  ),
                 ),
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(190),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container
-                        (
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ExactAssetImage(
-                                    "assets/images/background_maroon.png"),
-                                fit: BoxFit.cover
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: ExactAssetImage(
+                                "assets/images/background_maroon.png"),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(80),
+                            topRight: Radius.circular(80))),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.all(30),
+                        child: new Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 40,
                             ),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(80),
-                                topRight: Radius.circular(80))
-                        ),
-                        child: SingleChildScrollView(
-
-                          child: Padding(
-                            padding: EdgeInsets.all(30),
-                            child: new Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                Container(
-                                  child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                          text: "Enter 4 Digit Otp",
-                                          style: TextStyle(
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                          ))),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                PinEntryTextField(
-                                  showFieldAsBox: true,
-                                  fields: 4,
-                                  onSubmit: (String pin) {
-                                    otp=pin;
-                                  }, // end onSubmit
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                GestureDetector(
-                                  onTap:(){
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (context) => Login()));
-                                    // Navigator.pushNamed(context,Signup().toString());
-                                  },
-                                  child: Text(
-                                    "Resend OTP",
-                                    style: TextStyle(
+                            Container(
+                              child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      text: "Enter 4 Digit Otp",
+                                      style: TextStyle(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
-                                        fontSize: 15),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                    padding: EdgeInsets.only(left: 160, right: 160),
-                                    child: Divider(
-                                      color: Colors.white,
-                                      thickness: 5,
-                                    )),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(25),
-                                  child: RaisedButton(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(22)),
-                                    ),
-                                    child: Container(
-                                      width: screenWidth / 1.40,
-                                      height: 50,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Submit',
-                                            style: TextStyle(color: Color(0xFF670e1e), fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onPressed: () {
-
-                                      Otp();
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Terms & Condition apply", style: TextStyle(
-                                    fontSize: 15,color: Colors.white
-                                ),
-                                )
-                              ],
+                                        fontSize: 25,
+                                      ))),
                             ),
-                          ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            PinEntryTextField(
+                              showFieldAsBox: true,
+                              fields: 4,
+                              onSubmit: (String pin) {
+                                otp = pin;
+                              }, // end onSubmit
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Login()));
+                                // Navigator.pushNamed(context,Signup().toString());
+                              },
+                              child: Text(
+                                "Resend OTP",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(left: 160, right: 160),
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 5,
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              child: RaisedButton(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(22)),
+                                ),
+                                child: Container(
+                                  width: screenWidth / 1.40,
+                                  height: 50,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        'Submit',
+                                        style: TextStyle(
+                                            color: Color(0xFF670e1e),
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Otp();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Terms & Condition apply",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ],
-
+                  ),
                 ),
-              ]),
+              ],
+            ),
+          ]),
         ),
       ),
-
     );
-
   }
 }
 
@@ -476,12 +473,12 @@ class PinEntryTextField extends StatefulWidget {
 
   PinEntryTextField(
       {this.lastPin,
-        this.fields: 4,
-        this.onSubmit,
-        this.fieldWidth: 40.0,
-        this.fontSize: 20.0,
-        this.isTextObscure: false,
-        this.showFieldAsBox: false})
+      this.fields: 4,
+      this.onSubmit,
+      this.fieldWidth: 40.0,
+      this.fontSize: 20.0,
+      this.isTextObscure: false,
+      this.showFieldAsBox: false})
       : assert(fields > 0);
 
   @override
@@ -519,6 +516,7 @@ class PinEntryTextFieldState extends State<PinEntryTextField> {
     _textControllers.forEach((TextEditingController t) => t.dispose());
     super.dispose();
   }
+
   Widget generateTextFields(BuildContext context) {
     List<Widget> textFields = List.generate(widget.fields, (int i) {
       return buildTextField(i, context, i == 0);
@@ -533,9 +531,10 @@ class PinEntryTextFieldState extends State<PinEntryTextField> {
         verticalDirection: VerticalDirection.down,
         children: textFields);
   }
+
   void clearTextFields() {
     _textControllers.forEach(
-            (TextEditingController tEditController) => tEditController.clear());
+        (TextEditingController tEditController) => tEditController.clear());
     _pin.clear();
   }
 
@@ -614,6 +613,7 @@ class PinEntryTextFieldState extends State<PinEntryTextField> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return textfields;
