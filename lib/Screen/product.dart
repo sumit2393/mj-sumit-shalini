@@ -32,6 +32,7 @@ class _ProduclListstate extends State<ProduclList> {
   String price;
   int carat;
 
+
   List<dynamic> sortarray = [
     {
       "title": "Price High to Low",
@@ -104,7 +105,7 @@ class _ProduclListstate extends State<ProduclList> {
 
   getFromApiCategories(id, change, initialPage) {
     print(" m calling");
-    fetchCategories(id, userid, initialPage)
+    fetchCategories(id, userid, initialPage, orderby, orderway, price, carat)
         .then((value) => {
               allCate = new Subcategories.fromJson({
                 "id": -1,
@@ -244,6 +245,15 @@ class _ProduclListstate extends State<ProduclList> {
                       // Navigator.pop(context);
                       _controller.close();
                       print(_character);
+                      orderby='tag_price';
+                      productlist=[];
+                      if(_character=="Price High to Low"){
+                        orderway='desc';
+                      }
+                      else{
+                        orderway="asc";
+                      }
+
                       demo(_character);
                     },
                     child: Text("APPLY"),

@@ -66,9 +66,9 @@ Future<FProductList> fetchFeaturedProducts(userid) async {
 
 ///// @@@@@  categories list @@@@@@  ////
 
-Future<Categories> fetchCategories(id, userid, pageno) async {
+Future<Categories> fetchCategories(id, userid, pageno, orderby, orderway, price, carat) async {
   print("pageno$pageno");
-  String url = mainUrl + categories + "$id/$userid?page=$pageno";
+  String url = mainUrl + categories + "$id/$userid?page=$pageno&order_by=$orderby&order_way=$orderway&filter_price=$price&filter_carat=$carat";
   print("url===>>$url");
   final response = await http.get(url);
 
