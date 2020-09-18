@@ -19,17 +19,7 @@ class _HomeState extends State<Home> {
   List testimonial = [];
   List maicategories = [];
   List categorieslist = [];
-  // var carousellist = [
-  //   {"image": "assets/images/Homepage/1.png", "name": "Necklace"},
-  //   {"image": "assets/images/Homepage/1.png", "name": "Earrings"},
-  //   {"image": "assets/images/Homepage/1.png", "name": "Bangles"},
-  // ];
-  // var categorieslist = [
-  //   {"image": "assets/images/Homepage/6.png", "name": "Necklace"},
-  //   {"image": "assets/images/dummybrace.jpg", "name": "Earrings"},
-  //   {"image": "assets/images/dummybangles.jpeg", "name": "Bangles"},
-  //   {"image": "assets/images/dummybrace.jpg", "name": "Rings"},
-  // ];
+
   @override
   void initState() {
     super.initState();
@@ -49,10 +39,9 @@ class _HomeState extends State<Home> {
   }
 
   getUserid() async {
-    print("userid function called");
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userid = preferences.getInt("id");
-    print("userid" + userid.toString());
+
     fetchFeaturedProducts(userid).then((value) async => {
           print("featured products"),
           print(value.productlist),

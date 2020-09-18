@@ -23,8 +23,7 @@ class ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
     super.initState();
-    print("productdata");
-    print(widget.productdata);
+
     getUserid();
   }
 
@@ -316,7 +315,7 @@ class ProductDetailState extends State<ProductDetail> {
                           height: 6,
                         ),
                         Text(
-                          "",
+                          widget.productdata.mainCategory.name,
                           style: TextStyle(fontSize: 8, color: Colors.black),
                         )
                       ]),
@@ -372,7 +371,7 @@ class ProductDetailState extends State<ProductDetail> {
                   children: <Widget>[
                     quantity({
                       "title": "MATERIALS",
-                      "value": "",
+                      "value": widget.productdata.mainCategory.name,
                       "image": "assets/images/product/material.png"
                     }),
                     quantity({
@@ -399,42 +398,63 @@ class ProductDetailState extends State<ProductDetail> {
                 margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                 padding: EdgeInsets.all(12),
                 child: Column(children: <Widget>[
-                  rateWidget({
-                    "title": "DIAMOND SET",
-                    "amount": widget.productdata.diamondSet.toString()
-                  }),
-                  rateWidget({
-                    "title": "ARTICLE - NECKLACE",
-                    "amount": widget.productdata.articleNecklace.toString()
-                  }),
-                  rateWidget({
-                    "title": "GROSS WEIGHT",
-                    "amount": widget.productdata.grossWeight.toString()
-                  }),
-                  rateWidget({
-                    "title": "NET WEIGHT",
-                    "amount": widget.productdata.netWeight.toString()
-                  }),
-                  rateWidget({
-                    "title": "DIAMOND PIECES",
-                    "amount": widget.productdata.diamondPieces.toString()
-                  }),
-                  rateWidget({
-                    "title": "COLORSTONE WEIGHT",
-                    "amount": widget.productdata.colorStoneWeight.toString()
-                  }),
-                  rateWidget({
-                    "title": "COLORSTONE PIECES",
-                    "amount": widget.productdata.colorStonePieces.toString()
-                  }),
-                  rateWidget({
-                    "title": "POLKI WEIGHT",
-                    "amount": widget.productdata.polkiWeight.toString()
-                  }),
-                  rateWidget({
-                    "title": "POLKI PIECES",
-                    "amount": widget.productdata.polkiPieces.toString()
-                  }),
+                  widget.productdata.diamondSet != 0
+                      ? rateWidget({
+                          "title": "DIAMOND SET",
+                          "amount": widget.productdata.diamondSet.toString()
+                        })
+                      : Container(),
+                  widget.productdata.articleNecklace != "0"
+                      ? rateWidget({
+                          "title": "ARTICLE - NECKLACE",
+                          "amount":
+                              widget.productdata.articleNecklace.toString()
+                        })
+                      : Container(),
+                  widget.productdata.grossWeight != 0
+                      ? rateWidget({
+                          "title": "GROSS WEIGHT",
+                          "amount": widget.productdata.grossWeight.toString()
+                        })
+                      : Container(),
+                  widget.productdata.netWeight != 0
+                      ? rateWidget({
+                          "title": "NET WEIGHT",
+                          "amount": widget.productdata.netWeight.toString()
+                        })
+                      : Container(),
+                  widget.productdata.diamondPieces != 0
+                      ? rateWidget({
+                          "title": "DIAMOND PIECES",
+                          "amount": widget.productdata.diamondPieces.toString()
+                        })
+                      : Container(),
+                  widget.productdata.colorStoneWeight != 0
+                      ? rateWidget({
+                          "title": "COLORSTONE WEIGHT",
+                          "amount":
+                              widget.productdata.colorStoneWeight.toString()
+                        })
+                      : Container(),
+                  widget.productdata.colorStonePieces != "0"
+                      ? rateWidget({
+                          "title": "COLORSTONE PIECES",
+                          "amount":
+                              widget.productdata.colorStonePieces.toString()
+                        })
+                      : Container(),
+                  widget.productdata.polkiWeight != 0
+                      ? rateWidget({
+                          "title": "POLKI WEIGHT",
+                          "amount": widget.productdata.polkiWeight.toString()
+                        })
+                      : Container(),
+                  widget.productdata.polkiPieces != "0"
+                      ? rateWidget({
+                          "title": "POLKI PIECES",
+                          "amount": widget.productdata.polkiPieces.toString()
+                        })
+                      : Container(),
                   rateWidget({
                     "title": "TAG PRICE",
                     "amount": widget.productdata.tagPrice.toString()

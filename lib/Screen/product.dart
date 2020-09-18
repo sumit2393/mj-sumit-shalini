@@ -24,33 +24,30 @@ class _ProduclListstate extends State<ProduclList> {
   String bartitle = 'All';
   bool loading = false;
   bool bottomLoading = false;
-  int selectedId;
+  int selectedId = -1;
   int initialPage = 0;
   String nexturl;
+  String orderby;
+  String orderway;
+  String price;
+  int carat;
+
   List<dynamic> sortarray = [
     {
       "title": "Price High to Low",
-      "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
-    },
-    {
-      "title": "Price Low to High",
       "icon": Icon(Icons.arrow_downward, color: Color(0xFF670e1e))
     },
     {
-      "title": "New Launch Design",
+      "title": "Price Low to High",
       "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
     },
-    {
-      "title": "Discount",
-      "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
-    }
   ];
 
   List<String> stones = ["Light", "heavy"];
   List<String> type = ["gold", "Diamond"];
   List<String> pricelist = ["1000-2000", "2000-4000"];
 
-  var _character = "Price High to Low";
+  var _character = "";
   String dropdownstoneValue;
   String dropdownpriceValue;
   String dropdowntypeValue;
@@ -91,24 +88,24 @@ class _ProduclListstate extends State<ProduclList> {
   }
 
   getfromproductapi(id, pagecount) {
-    fetchProductlist(id, userid, pagecount).then((value) => {
-          nexturl = value.next_page_url,
-          setState(() {
-            productlist.addAll(value.data);
-            loading = false;
-            bottomLoading = false;
-            // setState(() {
+    fetchProductlist(id, userid, pagecount, orderby, orderway, price, carat)
+        .then((value) => {
+              nexturl = value.next_page_url,
+              setState(() {
+                productlist.addAll(value.data);
+                loading = false;
+                bottomLoading = false;
+                // setState(() {
 
-            // });
-          })
-        });
+                // });
+              })
+            });
   }
 
   getFromApiCategories(id, change, initialPage) {
+    print(" m calling");
     fetchCategories(id, userid, initialPage)
         .then((value) => {
-              print("categories response====>>>>${value.next_page_url}"),
-              print("arret====>>>>>>>>>${value.allproducts}"),
               allCate = new Subcategories.fromJson({
                 "id": -1,
                 "mainCategoryId": 1,
@@ -119,7 +116,6 @@ class _ProduclListstate extends State<ProduclList> {
               }),
               value.subcategories.insert(0, allCate),
               nexturl = value.next_page_url,
-              print("nexturl$nexturl"),
               if (change == "yes")
                 {
                   setState(() {
@@ -131,7 +127,6 @@ class _ProduclListstate extends State<ProduclList> {
                 }
               else
                 {
-                  print("you are in else part"),
                   setState(() {
                     bottomLoading = false;
                     loading = false;
@@ -181,13 +176,20 @@ class _ProduclListstate extends State<ProduclList> {
         });
   }
 
+  demo(character) {
+    initialPage = 0;
+    getfromproductapi(selectedId, initialPage);
+  }
+
   loadMore() {
     setState(() {
       bottomLoading = true;
     });
     initialPage = initialPage + 1;
-    print("load more function called");
+    print("load more function called${widget.mdata.id}");
+
     if (selectedId == -1) {
+      print("in if part");
       getFromApiCategories(widget.mdata.id, 'no', initialPage);
     } else {
       getfromproductapi(selectedId, initialPage);
@@ -239,7 +241,10 @@ class _ProduclListstate extends State<ProduclList> {
                   width: double.infinity,
                   child: RaisedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
+                      _controller.close();
+                      print(_character);
+                      demo(_character);
                     },
                     child: Text("APPLY"),
                   )),

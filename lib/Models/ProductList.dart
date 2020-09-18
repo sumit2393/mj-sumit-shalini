@@ -49,6 +49,8 @@ class PList {
   Image image;
   bool addedToWishList;
   List<Thumbnails> thumbnails;
+  MainCategory mainCategory;
+  MainCategory category;
   PList(
       {this.id,
       this.name,
@@ -78,13 +80,21 @@ class PList {
       this.updatedAt,
       this.image,
       this.addedToWishList,
-      this.thumbnails});
+      this.thumbnails,
+      this.mainCategory,
+      this.category});
   factory PList.fromJson(Map<String, dynamic> json) {
     Image image =
         json['image'] != null ? new Image.fromJson(json['image']) : null;
     var thumbNails = json["thumbnails"] as List;
     List<Thumbnails> thumbnails = thumbNails != null
         ? thumbNails.map((i) => Thumbnails.fromJson(i)).toList()
+        : null;
+    MainCategory mainCategory = json['main_category'] != null
+        ? new MainCategory.fromJson(json['main_category'])
+        : null;
+    MainCategory category = json['category'] != null
+        ? new MainCategory.fromJson(json['category'])
         : null;
 
     return PList(
@@ -116,7 +126,9 @@ class PList {
         updatedAt: json['updated_at'],
         image: image,
         addedToWishList: json['addedToWishList'],
-        thumbnails: thumbnails);
+        thumbnails: thumbnails,
+        mainCategory: mainCategory,
+        category: category);
   }
 }
 
@@ -133,5 +145,24 @@ class Thumbnails {
   Thumbnails({this.url});
   Thumbnails.fromJson(Map<String, dynamic> json) {
     url = json['url'];
+  }
+}
+
+class MainCategory {
+  int id;
+  String name;
+
+  MainCategory({this.id, this.name});
+
+  MainCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
   }
 }
