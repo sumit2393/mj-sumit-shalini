@@ -44,12 +44,12 @@ class _ProduclListstate extends State<ProduclList> {
     },
   ];
 
-  List<String> stones = ["Light", "heavy"];
-  List<String> type = ["gold", "Diamond"];
-  List<String> pricelist = ["1000-2000", "2000-4000"];
+//  List<String> stones = ["Light", "heavy"];
+  List<String> type = ["14", "18","22","24"];
+  List<String> pricelist = ["10001-20000", "20001-50000","50001-100000","100001-500000","500001-1000000","1000001-10000000"];
 
   var _character = "";
-  String dropdownstoneValue;
+//  String dropdownstoneValue;
   String dropdownpriceValue;
   String dropdowntypeValue;
   Subcategories allCate;
@@ -64,11 +64,12 @@ class _ProduclListstate extends State<ProduclList> {
   getUserid() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userid = preferences.getInt("id");
-
+    print('widget.mdata.id'+widget.mdata.id.toString());
     getCategories(widget.mdata.id, "yes");
   }
 
   getCategories(id, change) {
+    print('get Category------');
     setState(() {
       loading = true;
     });
@@ -82,6 +83,7 @@ class _ProduclListstate extends State<ProduclList> {
       bartitle = name;
     });
     if (name == "All") {
+      print('widget.mdata.id'+widget.mdata.id.toString());
       getCategories(widget.mdata.id, "no");
     } else {
       getfromproductapi(id, 0);
@@ -96,9 +98,6 @@ class _ProduclListstate extends State<ProduclList> {
                 productlist.addAll(value.data);
                 loading = false;
                 bottomLoading = false;
-                // setState(() {
-
-                // });
               })
             });
   }
@@ -177,9 +176,17 @@ class _ProduclListstate extends State<ProduclList> {
         });
   }
 
-  demo(character) {
+  demo() {
+    productlist=[];
     initialPage = 0;
-    getfromproductapi(selectedId, initialPage);
+    if(selectedId==-1)
+      {
+        getFromApiCategories(widget.mdata.id,"no",initialPage);
+      }
+    else{
+      getfromproductapi(selectedId, initialPage);
+    }
+
   }
 
   loadMore() {
@@ -246,7 +253,7 @@ class _ProduclListstate extends State<ProduclList> {
                       _controller.close();
                       print(_character);
                       orderby='tag_price';
-                      productlist=[];
+
                       if(_character=="Price High to Low"){
                         orderway='desc';
                       }
@@ -254,7 +261,7 @@ class _ProduclListstate extends State<ProduclList> {
                         orderway="asc";
                       }
 
-                      demo(_character);
+                      demo();
                     },
                     child: Text("APPLY"),
                   )),
@@ -297,19 +304,22 @@ class _ProduclListstate extends State<ProduclList> {
   openfilter() {
     setstone(data) {
       _controller.setState(() {
-        dropdownstoneValue = data;
+        //dropdownstoneValue = data;
       });
     }
 
     setprice(data) {
       _controller.setState(() {
         dropdownpriceValue = data;
+
+
       });
     }
 
     settype(data) {
       _controller.setState(() {
         dropdowntypeValue = data;
+
       });
     }
 
@@ -323,13 +333,13 @@ class _ProduclListstate extends State<ProduclList> {
               context,
               {"hinttext": "Price", "list": pricelist, "changevalue": setprice},
               dropdownpriceValue),
+//          dropDown(
+//              context,
+//              {"hinttext": "Stones", "list": stones, "changevalue": setstone},
+//              dropdownstoneValue),
           dropDown(
               context,
-              {"hinttext": "Stones", "list": stones, "changevalue": setstone},
-              dropdownstoneValue),
-          dropDown(
-              context,
-              {"hinttext": "Type", "list": type, "changevalue": settype},
+              {"hinttext": "Carat", "list": type, "changevalue": settype},
               dropdowntypeValue),
           Padding(
             padding: const EdgeInsets.only(
@@ -339,6 +349,13 @@ class _ProduclListstate extends State<ProduclList> {
                 child: RaisedButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    if(dropdownpriceValue!=null) {
+                      price = dropdownpriceValue;
+                    }
+                    if(dropdowntypeValue!=null) {
+                      carat = int.parse(dropdowntypeValue);
+                    }
+                    demo();
                   },
                   child: Text("APPLY"),
                 )),
