@@ -25,7 +25,7 @@ class _ProduclListstate extends State<ProduclList> {
   bool loading = false;
   bool bottomLoading = false;
   int selectedId = -1;
-  int initialPage = 0;
+  int initialPage = 1;
   String nexturl;
   String orderby;
   String orderway;
@@ -178,7 +178,7 @@ class _ProduclListstate extends State<ProduclList> {
 
   demo() {
     productlist=[];
-    initialPage = 0;
+    initialPage = 1;
     if(selectedId==-1)
       {
         getFromApiCategories(widget.mdata.id,"no",initialPage);
@@ -493,7 +493,7 @@ class _ProduclListstate extends State<ProduclList> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      initialPage = 0;
+                                      initialPage = 1;
                                       selectedId = categoriesname[index].id;
                                       productlist = [];
                                       getProductList(categoriesname[index].id,
