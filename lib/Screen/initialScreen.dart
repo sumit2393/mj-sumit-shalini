@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home.dart';
 import 'productdetail.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 List<dynamic> tabsdata = [
   {
@@ -37,7 +38,7 @@ List<dynamic> tabsdata = [
   {
     "icon": "assets/images/home/Bell_Icon.png",
     "page": Notificationlist(),
-   // "title": Text("Wishlist")
+    // "title": Text("Wishlist")
   },
   // {"icon":"assets/images/home/Gold_icon.png"},
   // {"icon":"assets/images/home/Cart_ICon.png"}
@@ -64,9 +65,15 @@ class _InitialState extends State<Initial> {
   bool isexpnaded = false;
 
   List socialitems = [
-    "assets/images/drawer/FB.png",
-    "assets/images/drawer/Insta.png",
-    "assets/images/drawer/YOUTUBE.png",
+    {
+      "image": "assets/images/drawer/FB.png",
+      "url": "https://www.facebook.com/thehouseofmbj/"
+    },
+    {
+      "image": "assets/images/drawer/Insta.png",
+      "url": "https://instagram.com/thehouseofmbj?igshid=gm88kie4g0m7"
+    },
+    {"image": "assets/images/drawer/YOUTUBE.png", "url": ""},
   ];
   List expansionlist = [
     {
@@ -128,7 +135,7 @@ class _InitialState extends State<Initial> {
                 )),
           ),
           actions: <Widget>[
-           /* GestureDetector(
+            /* GestureDetector(
               onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => Notificationlist())),
               child: Image.asset(
@@ -185,7 +192,6 @@ class _InitialState extends State<Initial> {
                           .map((e) => buildListTile(context, e))
                           .toList()),
                 ),
-
                 buildListTile(context, {
                   "name": "NEW ARRIVAL",
                   "goto": Home(),
@@ -211,7 +217,6 @@ class _InitialState extends State<Initial> {
                   "goto": Profile_Screen(),
                   "licon": "assets/images/drawer/Profile.png"
                 }),
-
                 socialContainer(context)
               ],
             )),
@@ -264,7 +269,7 @@ class _InitialState extends State<Initial> {
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w400)))
             ]),
-           CircleAvatar(
+            CircleAvatar(
               backgroundColor: Colors.white,
               radius: 30,
               child: Icon(
@@ -306,12 +311,21 @@ class _InitialState extends State<Initial> {
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: socialitems
-              .map((e) => Container(
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Image.asset(e, height: 18),
+              .map((e) => GestureDetector(
+                    onTap: () async {
+                      if (await canLaunch(e["url"])) {
+                        await launch(e["url"]);
+                      } else {
+                        throw 'Could not launch ${e["url"]}';
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Image.asset(e["image"], height: 18),
+                    ),
                   ))
               .toList()),
     );

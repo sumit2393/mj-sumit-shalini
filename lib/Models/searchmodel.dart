@@ -43,6 +43,8 @@ class Data {
   bool addedToWishList;
   Image image;
   List<Thumbnails> thumbnails;
+  MainCategory mainCategory;
+  MainCategory category;
 
   Data(
       {this.id,
@@ -70,7 +72,9 @@ class Data {
       this.polkiPieces,
       this.addedToWishList,
       this.image,
-      this.thumbnails});
+      this.thumbnails,
+      this.mainCategory,
+      this.category});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -105,6 +109,12 @@ class Data {
         thumbnails.add(new Thumbnails.fromJson(v));
       });
     }
+    mainCategory = json['main_category'] != null
+        ? new MainCategory.fromJson(json['main_category'])
+        : null;
+    category = json['category'] != null
+        ? new MainCategory.fromJson(json['category'])
+        : null;
   }
 }
 
@@ -157,6 +167,25 @@ class Thumbnails {
     data['product_id'] = this.productId;
     data['url'] = this.url;
 
+    return data;
+  }
+}
+
+class MainCategory {
+  int id;
+  String name;
+
+  MainCategory({this.id, this.name});
+
+  MainCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }

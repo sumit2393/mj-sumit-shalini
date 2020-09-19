@@ -65,9 +65,25 @@ class _SearchProductState extends State<SearchProduct> {
               border: InputBorder.none,
               prefixIcon: Padding(
                   padding: EdgeInsetsDirectional.only(end: 16.0),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  )),
+              suffixIcon: Padding(
+                  padding: EdgeInsetsDirectional.only(end: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   )),
               hintText: "Search products...",
               hintStyle: TextStyle(color: Colors.white)),

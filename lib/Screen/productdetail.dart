@@ -374,11 +374,14 @@ class ProductDetailState extends State<ProductDetail> {
                       "value": widget.productdata.mainCategory.name,
                       "image": "assets/images/product/material.png"
                     }),
-                    quantity({
-                      "title": "DIAMOND",
-                      "value": widget.productdata.diamondPieces.toString(),
-                      "image": "assets/images/product/diamond.png"
-                    }),
+                    widget.productdata.diamondPieces != 0
+                        ? quantity({
+                            "title": "DIAMOND",
+                            "value":
+                                widget.productdata.diamondPieces.toString(),
+                            "image": "assets/images/product/diamond.png"
+                          })
+                        : Container(),
                     quantity({
                       "title": "PRODUCT WEIGHT",
                       "value": widget.productdata.grossWeight,
@@ -614,21 +617,24 @@ Widget jewellerybox(zoom, url, screenWidth) {
 
 Widget quantity(data) {
   return Expanded(
+      flex: 1,
       child: Column(children: <Widget>[
-    Image.asset(
-      data["image"],
-      height: 18,
-    ),
-    Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text(
-          data["title"].toString(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 10, fontWeight: FontWeight.w600),
-        )),
-    Text(data["value"].toString(),
-        style: TextStyle(color: Colors.black, fontSize: 8))
-  ]));
+        Image.asset(
+          data["image"],
+          height: 18,
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              data["title"].toString(),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600),
+            )),
+        Text(data["value"].toString(),
+            style: TextStyle(color: Colors.black, fontSize: 8))
+      ]));
 }
 
 Widget wishlist(context) {
