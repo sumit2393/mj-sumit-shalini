@@ -52,12 +52,7 @@ class ProductDetailState extends State<ProductDetail> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(top: 90, bottom: 20),
-                      child: const Text("Information",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600)),
+
                     ),
                     const Text("We will connect you in next 24hours",
                         textAlign: TextAlign.center,
@@ -71,6 +66,11 @@ class ProductDetailState extends State<ProductDetail> {
                     Contactbutton(label: "CALL NOW", type: "call"),
                     SizedBox(height: 12),
                     Contactbutton(label: "CHAT WITH WHATSAPP", type: "message"),
+                    SizedBox(
+                      height:15
+                    ),
+                    Text("Business hours 10am-7pm",style: TextStyle(fontSize: 10, color: Colors.white),)
+
                   ],
                 ),
               ),
@@ -93,39 +93,39 @@ class ProductDetailState extends State<ProductDetail> {
         },
         backgroundColor: Theme.of(context).primaryColor,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
   }
 
   addToWishlist(productid, isadded) {
     if (!isadded) {
       addWish(userid, productid).then((value) => {
-            print(value),
-            if (value["status"] == "success")
-              {
-                registerToast(value["data"]["message"]),
-                setState(() {
-                  widget.productdata.addedToWishList = true;
-                })
-              }
-            else
-              {registerToast("Something went wrong Please try again")}
-          });
+        print(value),
+        if (value["status"] == "success")
+          {
+            registerToast(value["data"]["message"]),
+            setState(() {
+              widget.productdata.addedToWishList = true;
+            })
+          }
+        else
+          {registerToast("Something went wrong Please try again")}
+      });
     } else {
       print("in else part");
       removeWish(userid.toString(), productid.toString()).then((value) => {
-            print(value),
-            if (value["status"] == "success")
-              {
-                setState(() {
-                  registerToast(value["data"]["message"]);
-                  setState(() {
-                    widget.productdata.addedToWishList = false;
-                  });
-                })
-              }
-            else
-              {registerToast("Something went wrong")}
-          });
+        print(value),
+        if (value["status"] == "success")
+          {
+            setState(() {
+              registerToast(value["data"]["message"]);
+              setState(() {
+                widget.productdata.addedToWishList = false;
+              });
+            })
+          }
+        else
+          {registerToast("Something went wrong")}
+      });
     }
   }
 
@@ -140,14 +140,14 @@ class ProductDetailState extends State<ProductDetail> {
 
   zoomImage(data) {
     scaffoldState.currentState.showBottomSheet(
-      (BuildContext context) {
+          (BuildContext context) {
         return Center(
             child: Container(
                 height: 400,
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: PhotoView(
                   backgroundDecoration:
-                      BoxDecoration(color: Colors.transparent),
+                  BoxDecoration(color: Colors.transparent),
                   imageProvider: CachedNetworkImageProvider(data),
                 )));
       },
@@ -165,11 +165,9 @@ class ProductDetailState extends State<ProductDetail> {
           actions: <Widget>[
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Image.asset(
-                  "assets/images/home/Bell_Icon.png",
-                  height: 16,
-                  width: 16,
-                ))
+
+
+            )
           ],
         ),
       ),
@@ -188,46 +186,46 @@ class ProductDetailState extends State<ProductDetail> {
                     color: Colors.white,
                     child: widget.productdata.thumbnails.length != 0
                         ? CarouselSlider.builder(
-                            itemCount: widget.productdata.thumbnails.length,
-                            options: CarouselOptions(
-                              viewportFraction: 1.0,
-                              // aspectRatio: 1.0,
-                              height: 300,
-                              autoPlay: false,
-                              // autoPlay: true,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _currentPageIndex = index;
-                                });
-                              },
-                            ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: 70, left: 60, right: 60, top: 20),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      zoomImage(widget
-                                          .productdata.thumbnails[index].url);
-                                    },
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget
-                                          .productdata.thumbnails[index].url,
-                                    ),
-                                  ));
-                            },
-                          )
-                        : Padding(
+                      itemCount: widget.productdata.thumbnails.length,
+                      options: CarouselOptions(
+                        viewportFraction: 1.0,
+                        // aspectRatio: 1.0,
+                        height: 300,
+                        autoPlay: false,
+                        // autoPlay: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentPageIndex = index;
+                          });
+                        },
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
                             padding: EdgeInsets.only(
                                 bottom: 70, left: 60, right: 60, top: 20),
                             child: GestureDetector(
                               onTap: () {
-                                zoomImage(widget.productdata.image.url);
+                                zoomImage(widget
+                                    .productdata.thumbnails[index].url);
                               },
                               child: CachedNetworkImage(
-                                imageUrl: widget.productdata.image.url,
+                                imageUrl: widget
+                                    .productdata.thumbnails[index].url,
                               ),
-                            ))),
+                            ));
+                      },
+                    )
+                        : Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 70, left: 60, right: 60, top: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            zoomImage(widget.productdata.image.url);
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: widget.productdata.image.url,
+                          ),
+                        ))),
                 new Positioned(
                     left: 0,
                     right: 0,
@@ -235,7 +233,7 @@ class ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:
-                          widget.productdata.thumbnails.map<Widget>((url) {
+                      widget.productdata.thumbnails.map<Widget>((url) {
                         int index = widget.productdata.thumbnails.indexOf(url);
                         return Container(
                           width: 8.0,
@@ -294,8 +292,8 @@ class ProductDetailState extends State<ProductDetail> {
                 SizedBox(
                   height: 8,
                 ),
-                Text("",
-                    style: TextStyle(color: Colors.grey[400], fontSize: 12)),
+                Text(" +3% GST",
+                    style: TextStyle(color: Colors.grey[400], fontSize: 10)),
               ]),
             ]),
             Container(
@@ -315,7 +313,7 @@ class ProductDetailState extends State<ProductDetail> {
                           height: 6,
                         ),
                         Text(
-                          "",
+                          widget.productdata.mainCategory.name,
                           style: TextStyle(fontSize: 8, color: Colors.black),
                         )
                       ]),
@@ -344,7 +342,7 @@ class ProductDetailState extends State<ProductDetail> {
                         SizedBox(
                           height: 6,
                         ),
-                        Text("",
+                        Text( widget.productdata.category.name,
                             style: TextStyle(fontSize: 8, color: Colors.black))
                       ])
                     ])),
@@ -369,20 +367,20 @@ class ProductDetailState extends State<ProductDetail> {
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                 child: Row(
                   children: <Widget>[
+
                     quantity({
                       "title": "MATERIALS",
-                      "value": "",
+                      "value": widget.productdata.mainCategory.name,
                       "image": "assets/images/product/material.png"
                     }),
-                    quantity({
-                      "title": "DIAMOND",
-                      "value":
-                          " | " + widget.productdata.carat.toString() + "ct",
-                      "image": "assets/images/product/diamond.png"
-                    }),
+                    widget.productdata.diamondPieces != 0
+                        ? quantity({
+                      "title": "DIAMOND PIECES",
+                      "amount": widget.productdata.diamondPieces.toString()
+                    }) : Container(),
                     quantity({
                       "title": "PRODUCT WEIGHT",
-                      "value": "",
+                      "value": widget.productdata.grossWeight,
                       "image": "assets/images/product/weighht.png"
                     }),
                   ],
@@ -399,42 +397,63 @@ class ProductDetailState extends State<ProductDetail> {
                 margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                 padding: EdgeInsets.all(12),
                 child: Column(children: <Widget>[
-                  rateWidget({
+                  widget.productdata.diamondSet != 0
+                      ? rateWidget({
                     "title": "DIAMOND SET",
                     "amount": widget.productdata.diamondSet.toString()
-                  }),
-                  rateWidget({
+                  })
+                      : Container(),
+                  widget.productdata.articleNecklace != "0"
+                      ? rateWidget({
                     "title": "ARTICLE - NECKLACE",
-                    "amount": widget.productdata.articleNecklace.toString()
-                  }),
-                  rateWidget({
+                    "amount":
+                    widget.productdata.articleNecklace.toString()
+                  })
+                      : Container(),
+                  widget.productdata.grossWeight != 0
+                      ? rateWidget({
                     "title": "GROSS WEIGHT",
                     "amount": widget.productdata.grossWeight.toString()
-                  }),
-                  rateWidget({
+                  })
+                      : Container(),
+                  widget.productdata.netWeight != 0
+                      ? rateWidget({
                     "title": "NET WEIGHT",
                     "amount": widget.productdata.netWeight.toString()
-                  }),
-                  rateWidget({
+                  })
+                      : Container(),
+                  widget.productdata.diamondPieces != 0
+                      ? rateWidget({
                     "title": "DIAMOND PIECES",
                     "amount": widget.productdata.diamondPieces.toString()
-                  }),
-                  rateWidget({
+                  })
+                      : Container(),
+                  widget.productdata.colorStoneWeight != 0
+                      ? rateWidget({
                     "title": "COLORSTONE WEIGHT",
-                    "amount": widget.productdata.colorStoneWeight.toString()
-                  }),
-                  rateWidget({
+                    "amount":
+                    widget.productdata.colorStoneWeight.toString()
+                  })
+                      : Container(),
+                  widget.productdata.colorStonePieces != "0"
+                      ? rateWidget({
                     "title": "COLORSTONE PIECES",
-                    "amount": widget.productdata.colorStonePieces.toString()
-                  }),
-                  rateWidget({
+                    "amount":
+                    widget.productdata.colorStonePieces.toString()
+                  })
+                      : Container(),
+                  widget.productdata.polkiWeight != 0
+                      ? rateWidget({
                     "title": "POLKI WEIGHT",
                     "amount": widget.productdata.polkiWeight.toString()
-                  }),
-                  rateWidget({
+                  })
+                      : Container(),
+                  widget.productdata.polkiPieces != "0"
+                      ? rateWidget({
                     "title": "POLKI PIECES",
                     "amount": widget.productdata.polkiPieces.toString()
-                  }),
+                  })
+                      : Container(),
                   rateWidget({
                     "title": "TAG PRICE",
                     "amount": widget.productdata.tagPrice.toString()
@@ -491,7 +510,7 @@ class Contactbutton extends StatelessWidget {
         child: RaisedButton(
           elevation: 8,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           color: Colors.white,
           onPressed: () {
             print("m calling");
@@ -550,7 +569,7 @@ Widget request(context) {
               textAlign: TextAlign.center,
               text: TextSpan(
                 style:
-                    TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+                TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
                 children: [
                   WidgetSpan(
                       child: Padding(
@@ -594,21 +613,22 @@ Widget jewellerybox(zoom, url, screenWidth) {
 
 Widget quantity(data) {
   return Expanded(
+    flex: 1,
       child: Column(children: <Widget>[
-    Image.asset(
-      data["image"],
-      height: 18,
-    ),
-    Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text(
-          data["title"].toString(),
-          style: TextStyle(
-              color: Colors.black, fontSize: 10, fontWeight: FontWeight.w600),
-        )),
-    Text(data["value"].toString(),
-        style: TextStyle(color: Colors.black, fontSize: 8))
-  ]));
+        Image.asset(
+          data["image"],
+          height: 18,
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              data["title"].toString(),
+              style: TextStyle(
+                  color: Colors.black, fontSize: 10, fontWeight: FontWeight.w600),
+            )),
+        Text(data["value"].toString(),
+            style: TextStyle(color: Colors.black, fontSize: 8))
+      ]));
 }
 
 Widget wishlist(context) {

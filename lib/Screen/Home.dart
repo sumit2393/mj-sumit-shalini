@@ -95,13 +95,13 @@ class _HomeState extends State<Home> {
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(
+                                      image: CachedNetworkImageProvider(
                                           carousellist[itemIndex].image_path))),
                             )),
                         options: CarouselOptions(
                           viewportFraction: 1.0,
                           // aspectRatio: 1.0,
-                          height: 200,
+                          height: 220,
                           autoPlay: true,
                           onPageChanged: (index, reason) {
                             setState(() {

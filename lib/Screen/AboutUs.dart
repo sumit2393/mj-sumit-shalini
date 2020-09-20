@@ -15,7 +15,7 @@ class _AboutState extends State<About> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF670e1e),
-        title: const Text('AboutUs'),
+        title: const Text('About Us'),
       ),
       body:  WebView(
           initialUrl: 'http://portal.mbj.in/faq',

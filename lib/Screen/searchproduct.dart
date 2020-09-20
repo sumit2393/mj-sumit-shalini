@@ -65,9 +65,25 @@ class _SearchProductState extends State<SearchProduct> {
               border: InputBorder.none,
               prefixIcon: Padding(
                   padding: EdgeInsetsDirectional.only(end: 16.0),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  )),
+              suffixIcon: Padding(
+                  padding: EdgeInsetsDirectional.only(end: 16.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   )),
               hintText: "Search products...",
               hintStyle: TextStyle(color: Colors.white)),
@@ -85,9 +101,14 @@ class _SearchProductState extends State<SearchProduct> {
                             builder: (context) => ProductDetail(
                                 productdata: productlist[index])));
                       },
-                      child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(productlist[index].name)),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(productlist[index].name)),
+                      ),
                     );
                   })
               : Center(child: Text("No Products available"))),

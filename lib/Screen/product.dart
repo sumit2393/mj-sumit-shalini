@@ -24,34 +24,32 @@ class _ProduclListstate extends State<ProduclList> {
   String bartitle = 'All';
   bool loading = false;
   bool bottomLoading = false;
-  int selectedId;
-  int initialPage = 0;
+  int selectedId = -1;
+  int initialPage = 1;
   String nexturl;
+  String orderby;
+  String orderway;
+  String price;
+  int carat;
+
+
   List<dynamic> sortarray = [
     {
       "title": "Price High to Low",
-      "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
-    },
-    {
-      "title": "Price Low to High",
       "icon": Icon(Icons.arrow_downward, color: Color(0xFF670e1e))
     },
     {
-      "title": "New Launch Design",
+      "title": "Price Low to High",
       "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
     },
-    {
-      "title": "Discount",
-      "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
-    }
   ];
 
-  List<String> stones = ["Light", "heavy"];
-  List<String> type = ["gold", "Diamond"];
-  List<String> pricelist = ["1000-2000", "2000-4000"];
+//  List<String> stones = ["Light", "heavy"];
+  List<String> type = ["14", "18","22","24"];
+  List<String> pricelist = ["10001-20000", "20001-50000","50001-100000","100001-500000","500001-1000000","1000001-10000000"];
 
-  var _character = "Price High to Low";
-  String dropdownstoneValue;
+  var _character = "";
+//  String dropdownstoneValue;
   String dropdownpriceValue;
   String dropdowntypeValue;
   Subcategories allCate;
@@ -59,18 +57,19 @@ class _ProduclListstate extends State<ProduclList> {
   @override
   void initState() {
     super.initState();
-    print(widget.mdata.id);
+
     getUserid();
   }
 
   getUserid() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userid = preferences.getInt("id");
-
+    print('widget.mdata.id'+widget.mdata.id.toString());
     getCategories(widget.mdata.id, "yes");
   }
 
   getCategories(id, change) {
+    print('get Category------');
     setState(() {
       loading = true;
     });
@@ -84,6 +83,7 @@ class _ProduclListstate extends State<ProduclList> {
       bartitle = name;
     });
     if (name == "All") {
+      print('widget.mdata.id'+widget.mdata.id.toString());
       getCategories(widget.mdata.id, "no");
     } else {
       getfromproductapi(id, 0);
@@ -91,98 +91,102 @@ class _ProduclListstate extends State<ProduclList> {
   }
 
   getfromproductapi(id, pagecount) {
-    print("selctedid$id");
-    print("pagecount$pagecount");
-    fetchProductlist(id, userid, pagecount).then((value) => {
-      print("fetch productlist"),
-      print(value.data),
-      nexturl = value.next_page_url,
-      setState(() {
-        productlist.addAll(value.data);
-        loading = false;
-        bottomLoading = false;
-        // setState(() {
-
-        // });
-        print(productlist);
-      })
-    });
+    fetchProductlist(id, userid, pagecount, orderby, orderway, price, carat)
+        .then((value) => {
+              nexturl = value.next_page_url,
+              setState(() {
+                productlist.addAll(value.data);
+                loading = false;
+                bottomLoading = false;
+              })
+            });
   }
 
   getFromApiCategories(id, change, initialPage) {
-    fetchCategories(id, userid, initialPage)
+    print(" m calling");
+    fetchCategories(id, userid, initialPage, orderby, orderway, price, carat)
         .then((value) => {
-      allCate = new Subcategories.fromJson({
-        "id": -1,
-        "mainCategoryId": 1,
-        "imagePath": "",
-        "name": "All",
-        "createdAt": "",
-        "updatedAt": ""
-      }),
-      value.subcategories.insert(0, allCate),
-      nexturl = value.next_page_url,
-      if (change == "yes")
-        {
-          setState(() {
-            bottomLoading = false;
-            loading = false;
-            productlist.addAll(value.allproducts);
-            categoriesname = value.subcategories;
-            print("length");
-            print(categoriesname.length);
-          }),
-        }
-      else
-        {
-          setState(() {
-            bottomLoading = false;
-            loading = false;
-            productlist.addAll(value.allproducts);
-          }),
-        }
-    })
+              allCate = new Subcategories.fromJson({
+                "id": -1,
+                "mainCategoryId": 1,
+                "imagePath": "",
+                "name": "All",
+                "createdAt": "",
+                "updatedAt": ""
+              }),
+              value.subcategories.insert(0, allCate),
+              nexturl = value.next_page_url,
+              if (change == "yes")
+                {
+                  setState(() {
+                    bottomLoading = false;
+                    loading = false;
+                    productlist.addAll(value.allproducts);
+                    categoriesname = value.subcategories;
+                  }),
+                }
+              else
+                {
+                  setState(() {
+                    bottomLoading = false;
+                    loading = false;
+                    productlist.addAll(value.allproducts);
+                  }),
+                }
+            })
         .catchError((e) => {print(e)});
   }
 
   addToWishlist(productid, isindex, isadded) {
     if (!isadded) {
       addWish(userid, productid).then((value) => {
-        print(value),
-        if (value["status"] == "success")
-          {
-            registerToast(value["data"]["message"]),
-            setState(() {
-              productlist[isindex].addedToWishList = true;
-            })
-          }
-        else
-          {registerToast("Something went wrong Please try again")}
-      });
+            if (value["status"] == "success")
+              {
+                registerToast(value["data"]["message"]),
+                setState(() {
+                  productlist[isindex].addedToWishList = true;
+                })
+              }
+            else
+              {registerToast("Something went wrong Please try again")}
+          });
     } else {
       removeWish(userid.toString(), productid.toString()).then((value) => {
-        if (value["status"] == "success")
-          {
-            setState(() {
-              registerToast(value["data"]["message"]);
-              setState(() {
-                productlist[isindex].addedToWishList = false;
-              });
-            })
-          }
-        else
-          {registerToast("Something went wrong")}
-      });
+            if (value["status"] == "success")
+              {
+                setState(() {
+                  registerToast(value["data"]["message"]);
+                  setState(() {
+                    productlist[isindex].addedToWishList = false;
+                  });
+                })
+              }
+            else
+              {registerToast("Something went wrong")}
+          });
     }
   }
 
   requestCall(productid) {
     requestCallback(userid, productid).then((value) => {
-      if (value["status"] == "success")
-        {registerToast(value["data"]["message"])}
-      else
-        {registerToast("Something went wrong")}
-    });
+          if (value["status"] == "success")
+            {registerToast(value["data"]["message"])}
+          else
+            {registerToast("Something went wrong")}
+        });
+  }
+
+  demo() {
+    productlist=[];
+    initialPage = 0;
+    if(selectedId==-1)
+      {
+        getFromApiCategories(widget.mdata.id,"no",initialPage);
+      }
+    else{
+      getfromproductapi(selectedId, initialPage);
+    }
+
   }
 
   loadMore() {
@@ -190,9 +194,11 @@ class _ProduclListstate extends State<ProduclList> {
       bottomLoading = true;
     });
     initialPage = initialPage + 1;
-    print("load more function called");
+    print("load more function called${widget.mdata.id}");
+
     if (selectedId == -1) {
-      getFromApiCategories(selectedId, 'no', initialPage);
+      print("in if part");
+      getFromApiCategories(widget.mdata.id, 'no', initialPage);
     } else {
       getfromproductapi(selectedId, initialPage);
     }
@@ -209,7 +215,7 @@ class _ProduclListstate extends State<ProduclList> {
 
   openSort() async {
     _controller = await scaffoldState.currentState.showBottomSheet(
-          (BuildContext context) {
+      (BuildContext context) {
         return Wrap(
           alignment: WrapAlignment.center,
           children: <Widget>[
@@ -243,7 +249,19 @@ class _ProduclListstate extends State<ProduclList> {
                   width: double.infinity,
                   child: RaisedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
+                      _controller.close();
+                      print(_character);
+                      orderby='tag_price';
+
+                      if(_character=="Price High to Low"){
+                        orderway='desc';
+                      }
+                      else{
+                        orderway="asc";
+                      }
+
+                      demo();
                     },
                     child: Text("APPLY"),
                   )),
@@ -262,8 +280,8 @@ class _ProduclListstate extends State<ProduclList> {
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         leading:
-        //Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
-        IconButton(
+            //Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
+            IconButton(
           padding: EdgeInsets.zero,
           icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
           onPressed: () {
@@ -286,62 +304,71 @@ class _ProduclListstate extends State<ProduclList> {
   openfilter() {
     setstone(data) {
       _controller.setState(() {
-        dropdownstoneValue = data;
+        //dropdownstoneValue = data;
       });
     }
 
     setprice(data) {
       _controller.setState(() {
         dropdownpriceValue = data;
+
+
       });
     }
 
     settype(data) {
       _controller.setState(() {
         dropdowntypeValue = data;
+
       });
     }
 
     _controller = scaffoldState.currentState.showBottomSheet(
-            (BuildContext context) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 20),
-            child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
-              sheetHeading(context, "Filters"),
-              dropDown(
-                  context,
-                  {"hinttext": "Price", "list": pricelist, "changevalue": setprice},
-                  dropdownpriceValue),
-              dropDown(
-                  context,
-                  {"hinttext": "Stones", "list": stones, "changevalue": setstone},
-                  dropdownstoneValue),
-              dropDown(
-                  context,
-                  {"hinttext": "Type", "list": type, "changevalue": settype},
-                  dropdowntypeValue),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 60.0, bottom: 20, left: 16, right: 16),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("APPLY"),
-                    )),
-              )
-            ]),
-          );
-        },
+        (BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 20),
+        child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
+          sheetHeading(context, "Filters"),
+          dropDown(
+              context,
+              {"hinttext": "Price", "list": pricelist, "changevalue": setprice},
+              dropdownpriceValue),
+//          dropDown(
+//              context,
+//              {"hinttext": "Stones", "list": stones, "changevalue": setstone},
+//              dropdownstoneValue),
+          dropDown(
+              context,
+              {"hinttext": "Carat", "list": type, "changevalue": settype},
+              dropdowntypeValue),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 60.0, bottom: 20, left: 16, right: 16),
+            child: SizedBox(
+                width: double.infinity,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if(dropdownpriceValue!=null) {
+                      price = dropdownpriceValue;
+                    }
+                    if(dropdowntypeValue!=null) {
+                      carat = int.parse(dropdowntypeValue);
+                    }
+                    demo();
+                  },
+                  child: Text("APPLY"),
+                )),
+          )
+        ]),
+      );
+    },
         backgroundColor: Colors.grey[200],
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
   }
 
   Container dropDown(BuildContext context, dropdata, setv) {
-    print(dropdata);
     return Container(
       margin: EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
@@ -393,7 +420,7 @@ class _ProduclListstate extends State<ProduclList> {
           NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
                 if (scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent &&
+                        scrollInfo.metrics.maxScrollExtent &&
                     nexturl != null) {
                   loadMore();
                 }
@@ -410,10 +437,10 @@ class _ProduclListstate extends State<ProduclList> {
                                 scale: 30.0))),
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: new AssetImage(
-                              "assets/images/product/Background.png"),
-                        )),
+                      fit: BoxFit.cover,
+                      image: new AssetImage(
+                          "assets/images/product/background.jpg"),
+                    )),
                     child: Stack(children: <Widget>[
                       Positioned.fill(
                         bottom: 50,
@@ -422,7 +449,7 @@ class _ProduclListstate extends State<ProduclList> {
                             child: Text(
                               widget.mdata.name,
                               style:
-                              TextStyle(color: Colors.white, fontSize: 26),
+                                  TextStyle(color: Colors.white, fontSize: 26),
                             )),
                       ),
                       Positioned(
@@ -466,7 +493,7 @@ class _ProduclListstate extends State<ProduclList> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      initialPage = 0;
+                                      initialPage = 1;
                                       selectedId = categoriesname[index].id;
                                       productlist = [];
                                       getProductList(categoriesname[index].id,
@@ -505,150 +532,150 @@ class _ProduclListstate extends State<ProduclList> {
                       )),
                   loading
                       ? Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.white),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ))
+                          child: CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ))
                       : productlist.length != 0
-                      ? Container(
-                    color: Theme.of(context).primaryColor,
-                    child: GridView.builder(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 20),
-                        itemCount: productlist.length,
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 18,
-                          crossAxisSpacing: 16,
-                          crossAxisCount: 2,
-                          childAspectRatio: MediaQuery.of(context)
-                              .size
-                              .width /
-                              (MediaQuery.of(context).size.height -
-                                  200),
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                              child: Stack(children: <Widget>[
-                                Column(children: <Widget>[
-                                  Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetail(
-                                                          productdata:
-                                                          productlist[
-                                                          index])));
-                                        },
-                                        child: Container(
-                                            margin:
-                                            EdgeInsets.only(top: 20),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                        productlist[index]
-                                                            .image
-                                                            .url,
-                                                        scale: 30.0)))),
-                                      )),
-                                  // Text(productlist[index].name),
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 7),
-                                      child: Text(
-                                        productlist[index].name,
-                                        maxLines: 1,
-                                        overflow:
-                                        TextOverflow.ellipsis,
-                                        style:
-                                        TextStyle(fontSize: 12),
-                                      )),
-                                  Text(
-                                      "\u20B9" +
-                                          productlist[index]
-                                              .tagPrice
-                                              .toString(),
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                          ? Container(
+                              color: Theme.of(context).primaryColor,
+                              child: GridView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 20),
+                                  itemCount: productlist.length,
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    mainAxisSpacing: 18,
+                                    crossAxisSpacing: 16,
+                                    crossAxisCount: 2,
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height -
+                                            200),
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          color: Colors.white,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 12),
+                                        child: Stack(children: <Widget>[
+                                          Column(children: <Widget>[
+                                            Expanded(
+                                                child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetail(
+                                                                productdata:
+                                                                    productlist[
+                                                                        index])));
+                                              },
+                                              child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 20),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: CachedNetworkImageProvider(
+                                                              productlist[index]
+                                                                  .image
+                                                                  .url,
+                                                              scale: 30.0)))),
+                                            )),
+                                            // Text(productlist[index].name),
+                                            Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 7),
+                                                child: Text(
+                                                  productlist[index].name,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                )),
+                                            Text(
+                                                "\u20B9" +
+                                                    productlist[index]
+                                                        .tagPrice
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
 
-                                  ButtonTheme(
-                                      minWidth: 200.0,
-                                      height: 28.0,
-                                      buttonColor: Theme.of(context)
-                                          .primaryColor,
-                                      child: RaisedButton(
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                15.0),
-                                          ),
-                                          child: Text(
-                                            "REQUEST A CALLBACK",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 8),
-                                          ),
-                                          onPressed: () {
-                                            requestCall(
-                                                productlist[index]
-                                                    .id);
-                                          }))
-                                ]),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        addToWishlist(
-                                            productlist[index].id,
-                                            index,
-                                            productlist[index]
-                                                .addedToWishList);
-                                      },
-                                      child: Icon(Icons.favorite,
-                                          size: 16,
-                                          color: productlist[index]
-                                              .addedToWishList
-                                              ? Colors.red
-                                              : Colors.grey[500]),
-                                    )),
-                              ]));
-                        }),
-                  )
-                      : Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30),
-                      child: Text(
-                        "No Products available",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
+                                            ButtonTheme(
+                                                minWidth: 200.0,
+                                                height: 28.0,
+                                                buttonColor: Theme.of(context)
+                                                    .primaryColor,
+                                                child: RaisedButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child: Text(
+                                                      "REQUEST A CALLBACK",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 8),
+                                                    ),
+                                                    onPressed: () {
+                                                      requestCall(
+                                                          productlist[index]
+                                                              .id);
+                                                    }))
+                                          ]),
+                                          Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  addToWishlist(
+                                                      productlist[index].id,
+                                                      index,
+                                                      productlist[index]
+                                                          .addedToWishList);
+                                                },
+                                                child: Icon(Icons.favorite,
+                                                    size: 16,
+                                                    color: productlist[index]
+                                                            .addedToWishList
+                                                        ? Colors.red
+                                                        : Colors.grey[500]),
+                                              )),
+                                        ]));
+                                  }),
+                            )
+                          : Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                child: Text(
+                                  "No Products available",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ),
                   bottomLoading
                       ? Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.white),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ))
+                          child: CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ))
                       : Container()
                 ],
               )),

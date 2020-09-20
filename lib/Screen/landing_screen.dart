@@ -98,28 +98,29 @@ class _LandingScreenState extends State<LandingScreen> {
                                   minWidth: 300.0,
                                   height: 50.0,
                                   child: RaisedButton(
+                                     padding: EdgeInsets.only(right:20),
                                       color: Colors.white,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
                                             22.0),
                                       ),
                                       child: Row(
+
                                         mainAxisAlignment: MainAxisAlignment
                                             .center,
+
                                         children: <Widget>[
-                                          Icon(
-                                            Icons.phone,
-                                            color: Color(0xFF670e1e),
-                                          ),
                                           SizedBox(
                                             width: 20,
                                           ),
                                           Text(
+
                                             "Login",
                                             style: TextStyle(
                                                 color: Color(0xFF670e1e),
-                                                fontSize: 20),
+                                                fontSize: 18,),
                                           ),
+
                                         ],
                                       ),
                                       onPressed: () {
@@ -134,6 +135,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             Container(
                               padding: EdgeInsets.only(left: 50, right: 50),
                               child: ButtonTheme(
+                                padding: EdgeInsets.only(left: 10),
                                   height: 50.0,
                                   child: RaisedButton(
                                       color: Colors.white,
@@ -145,18 +147,16 @@ class _LandingScreenState extends State<LandingScreen> {
                                         mainAxisAlignment: MainAxisAlignment
                                             .center,
                                         children: <Widget>[
-                                          Icon(
-                                              Icons.person,
-                                              color: Color(0xFF670e1e)
-                                          ),
+
                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
                                             "Register",
+
                                             style: TextStyle(
                                               color: Color(0xFF670e1e),
-                                              fontSize: 20,
+                                              fontSize: 18,
                                             ),
                                           ),
                                         ],

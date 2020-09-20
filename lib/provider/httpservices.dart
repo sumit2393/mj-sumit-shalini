@@ -55,9 +55,8 @@ Future<BannerItem> fetchBanners() async {
 
 Future<FProductList> fetchFeaturedProducts(userid) async {
   final response =
-  await http.get(mainUrl + featuredProducts + userid.toString());
-  print(response.statusCode);
-  print(response.body);
+      await http.get(mainUrl + featuredProducts + userid.toString());
+
   if (response.statusCode == 200) {
     return FProductList.fromJson(json.decode(response.body));
   } else {
@@ -67,12 +66,12 @@ Future<FProductList> fetchFeaturedProducts(userid) async {
 
 ///// @@@@@  categories list @@@@@@  ////
 
-Future<Categories> fetchCategories(id, userid, pageno) async {
-  String url = mainUrl + categories + "$id/$userid?page=$pageno";
-
+Future<Categories> fetchCategories(id, userid, pageno, orderby, orderway, price, carat) async {
+  print("pageno$pageno");
+  String url = mainUrl + categories + "$id/$userid?page=$pageno&order_by=$orderby&order_way=$orderway&filter_price=$price&filter_carat=$carat";
+  print("url===>>$url");
   final response = await http.get(url);
-  print(response.statusCode);
-  print(response.body);
+
   if (response.statusCode == 200) {
     return Categories.fromJson(json.decode(response.body));
   } else {
@@ -84,8 +83,7 @@ Future<Categories> fetchCategories(id, userid, pageno) async {
 
 Future<ProductDetails> fetchProductdetails(id) async {
   final response = await http.get(mainUrl + productDetails + id);
-  print(response.statusCode);
-  print(response.body);
+
   if (response.statusCode == 200) {
     return ProductDetails.fromJson(json.decode(response.body));
   } else {
@@ -94,17 +92,25 @@ Future<ProductDetails> fetchProductdetails(id) async {
 }
 
 /////  @@@@@  productlist  @@@@@@@@@ ///
-Future<ProductList> fetchProductlist(id, userid, pagecount) async {
-  print("userd" + userid.toString());
-  print("id" + id.toString());
+Future<ProductList> fetchProductlist(
+    id, userid, pagecount, orderby, orderway, price, carat) async {
+  print("orderby===>>>$orderby");
+  print("orderway===>>>$orderway");
+  print("price===>>>$price");
+  print("carat===>>>$carat");
+  print("http://portal.mbj.in/api/" +
+      "categories/" +
+      id.toString() +
+      "/products/" +
+      userid.toString() +
+      "?page=$pagecount&order_by=$orderby&order_way=$orderway&filter_price=$price&filter_carat=$carat");
   final response = await http.get(mainUrl +
       productlist +
       id.toString() +
       "/products/" +
       userid.toString() +
-      "?page=$pagecount");
-  print(response.statusCode);
-  print(response.body);
+      "?page=$pagecount&order_by=$orderby&order_way=$orderway&filter_price=$price&filter_carat=$carat");
+
   if (response.statusCode == 200) {
     return ProductList.fromJson(json.decode(response.body));
   } else {
@@ -164,6 +170,7 @@ Future removeWish(userid, productid) async {
     throw Exception('Failed to load Categories');
   }
 }
+
 Future<Searchmodel> search(product, userid) async {
   final response = await http.get(searchproduct +
       "search_query=" +

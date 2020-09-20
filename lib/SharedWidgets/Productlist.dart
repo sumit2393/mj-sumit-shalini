@@ -8,16 +8,12 @@ class ProductList extends StatefulWidget {
   final productlist;
 
   final userid;
-
   ProductList(this.productlist, this.userid);
-
   @override
   _ProductListState createState() => _ProductListState();
 }
-
 class _ProductListState extends State<ProductList> {
   bool isloading = false;
-
   requestCall(productid) {
     requestCallback(productid, widget.userid).then((value)  {
           if (value["status"] == "success")
@@ -26,7 +22,6 @@ class _ProductListState extends State<ProductList> {
             {registerToast("Something went wrong");}
         });
   }
-
   removeFromWishlist(pid, index) {
     setState(() {
       isloading = true;
@@ -44,7 +39,6 @@ class _ProductListState extends State<ProductList> {
             {registerToast("Something went wrong");}
         });
   }
-
   registerToast(String toast) {
     return Fluttertoast.showToast(
         msg: toast,
@@ -53,7 +47,6 @@ class _ProductListState extends State<ProductList> {
         backgroundColor: Color(0xFF670e1e),
         textColor: Colors.white);
   }
-
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -113,7 +106,6 @@ class _ProductListState extends State<ProductList> {
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                             )),
-
                         ButtonTheme(
                             minWidth: 200.0,
                             height: 28.0,
@@ -125,8 +117,7 @@ class _ProductListState extends State<ProductList> {
                                 child: Text(
                                   "REQUEST A CALLBACK",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 8),
-                                ),
+                                      color: Colors.white, fontSize: 8),),
                                 onPressed: () {
                                   requestCall(
                                       widget.productlist[index].product.id);
@@ -137,8 +128,7 @@ class _ProductListState extends State<ProductList> {
                         right: 0,
                         child: GestureDetector(
                             onTap: () {
-                              removeFromWishlist(
-                                  widget.productlist[index].product.id, index);
+                              removeFromWishlist(widget.productlist[index].product.id, index);
                             },
                             child: Icon(Icons.close, color: Colors.grey)),
                       ),

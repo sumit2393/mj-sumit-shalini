@@ -5,30 +5,15 @@ class Categories {
 
   Categories({this.subcategories, this.allproducts, this.next_page_url});
 
-  // Categories.fromJson(Map<String, dynamic> json) {
-  //   if (json['subcategories'] != null) {
-  //     subcategories = new List<Subcategories>();
-  //     json['subcategories'].forEach((v) {
-  //       subcategories.add(new Subcategories.fromJson(v));
-  //     });
-  //   }
-  //   if (json['allproducts'] != null) {
-  //     allproducts = new List<Allproducts>();
-  //     json['allproducts'].forEach((v) {
-  //       allproducts.add(new Allproducts.fromJson(v));
-  //     });
-  //   }
-  // }
   factory Categories.fromJson(Map<String, dynamic> json) {
     var subcategories = json['subcategories'] as List;
     List<Subcategories> subCategories = subcategories != null
         ? subcategories.map((i) => Subcategories.fromJson(i)).toList()
         : null;
-    // print('--------All Product--------');
-    // print(json['allproducts']);
-    // print('--------All Product--------');
+
     var next_page_url = json['allproducts']["next_page_url"];
     var allproducts = json['allproducts']['data'] as List;
+
     List<Allproducts> allProducts = allproducts != null
         ? allproducts.map((i) => Allproducts.fromJson(i)).toList()
         : null;
@@ -61,11 +46,11 @@ class Subcategories {
 
   Subcategories(
       {this.id,
-      this.mainCategoryId,
-      this.imagePath,
-      this.name,
-      this.createdAt,
-      this.updatedAt});
+        this.mainCategoryId,
+        this.imagePath,
+        this.name,
+        this.createdAt,
+        this.updatedAt});
 
   Subcategories.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -118,37 +103,41 @@ class Allproducts {
   bool addedToWishList;
   Image1 image;
   List<Thumbnails> thumbnails;
+  MainCategory mainCategory;
+  MainCategory category;
 
   Allproducts(
       {this.id,
-      this.name,
-      this.price,
-      this.mainCategoryId,
-      this.categoryId,
-      this.primarySku,
-      this.secondarySku,
-      this.grossWeight,
-      this.designCode,
-      this.netWeight,
-      this.tagPrice,
-      this.pieces,
-      this.articleNecklace,
-      this.pearlWeight,
-      this.kundanStones,
-      this.carat,
-      this.diamondSet,
-      this.diamondWeight,
-      this.diamondPieces,
-      this.colorStoneWeight,
-      this.colorStonePieces,
-      this.polkiWeight,
-      this.polkiPieces,
-      //   this.publishedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.addedToWishList,
-      this.image,
-      this.thumbnails});
+        this.name,
+        this.price,
+        this.mainCategoryId,
+        this.categoryId,
+        this.primarySku,
+        this.secondarySku,
+        this.grossWeight,
+        this.designCode,
+        this.netWeight,
+        this.tagPrice,
+        this.pieces,
+        this.articleNecklace,
+        this.pearlWeight,
+        this.kundanStones,
+        this.carat,
+        this.diamondSet,
+        this.diamondWeight,
+        this.diamondPieces,
+        this.colorStoneWeight,
+        this.colorStonePieces,
+        this.polkiWeight,
+        this.polkiPieces,
+        //   this.publishedAt,
+        this.createdAt,
+        this.updatedAt,
+        this.addedToWishList,
+        this.image,
+        this.thumbnails,
+        this.mainCategory,
+        this.category});
 
   Allproducts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -179,12 +168,19 @@ class Allproducts {
     updatedAt = json['updated_at'];
     addedToWishList = json['addedToWishList'];
     image = json['image'] != null ? new Image1.fromJson(json['image']) : null;
+
     if (json['thumbnails'] != null) {
       thumbnails = new List<Thumbnails>();
       json['thumbnails'].forEach((v) {
         thumbnails.add(new Thumbnails.fromJson(v));
       });
     }
+    mainCategory = json['main_category'] != null
+        ? new MainCategory.fromJson(json['main_category'])
+        : null;
+    category = json['category'] != null
+        ? new MainCategory.fromJson(json['category'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -236,11 +232,11 @@ class Image1 {
 
   Image1(
       {this.id,
-      this.url,
-      this.imageableId,
-      this.imageableType,
-      this.createdAt,
-      this.updatedAt});
+        this.url,
+        this.imageableId,
+        this.imageableType,
+        this.createdAt,
+        this.updatedAt});
 
   Image1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -288,6 +284,25 @@ class Thumbnails {
     data['url'] = this.url;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class MainCategory {
+  int id;
+  String name;
+
+  MainCategory({this.id, this.name});
+
+  MainCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }

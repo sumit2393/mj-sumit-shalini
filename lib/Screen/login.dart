@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                                 child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
-                                        text: "MOBILE NUMBER",
+                                        text: "LOGIN",
                                         style: TextStyle(
                                           fontStyle: FontStyle.normal,
                                           fontWeight: FontWeight.bold,
@@ -160,11 +160,11 @@ class _LoginState extends State<Login> {
                                         prefixIcon: Icon(
                                           Icons.mobile_screen_share,
                                           color: Colors.white,
-                                          size: 30,
+                                          size: 20,
                                         ),
                                         counterText: '',
                                         filled: true,
-                                        hintStyle: new TextStyle(color: Colors.white),
+                                        hintStyle: new TextStyle(color: Colors.white,fontSize: 15),
                                        hintText: "Phone No",
                                         fillColor: Color.fromRGBO(83, 0, 23, 3.0),
                                       ),
@@ -175,12 +175,12 @@ class _LoginState extends State<Login> {
                                       })
                               ),
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
-                              Container(
+                             /* Container(
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.only(left: 50, right: 50),
-                                  child: RichText(
+                                 child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                         text: 'We will send you an ',
@@ -197,10 +197,8 @@ class _LoginState extends State<Login> {
                                             text: ' on this phone number.',
                                           ),
                                         ]),
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
+                                  )),*/
+
                               Container(
                                   padding: EdgeInsets.only(left: 160, right: 160),
                                   child: Divider(
@@ -243,8 +241,8 @@ class _LoginState extends State<Login> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
-                                          'Continue',
-                                          style: TextStyle(color: Colors.black, fontSize: 20),
+                                          'CONFIRM',
+                                          style: TextStyle(color: Color(0xFF670e1e), fontSize: 18),
                                         ),
                                       ],
                                     ),
@@ -257,6 +255,10 @@ class _LoginState extends State<Login> {
                                   },
                                 ),
                               ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Terms & Conditions apply",style: TextStyle(fontSize: 15,color: Colors.white),)
                             ],
                           ),
                         ),
@@ -293,8 +295,10 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
       //String user = data['data']['user'];
       savePref(data["data"]["user"]["id"],data["data"]["user"] ["email"],data["data"]["user"]["name"],data["data"]["user"]["phone"],data["data"]["user"]["dob"],data["data"]["user"]["anniversary_date"]);
       setState(() {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext ctx) => Initial()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext ctx) => Initial()),
+                (r) => false);
       });
     }
   }
@@ -366,7 +370,7 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
                                   child: RichText(
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
-                                          text: "Enter 4 Digit Otp",
+                                          text: "Enter 4 Digit OTP",
                                           style: TextStyle(
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.bold,
@@ -390,7 +394,7 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
                                 GestureDetector(
                                   onTap:(){
                                     Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (context) => Login()));
+                                        .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
                                     // Navigator.pushNamed(context,Signup().toString());
                                   },
                                   child: Text(
@@ -442,11 +446,7 @@ class _LoginMobileOTPScreenState extends State<LoginMobileOTPScreen> {
                                 SizedBox(
                                   height: 5,
                                 ),
-                                Text(
-                                  "Terms & Condition apply", style: TextStyle(
-                                    fontSize: 15,color: Colors.white
-                                ),
-                                )
+
                               ],
                             ),
                           ),

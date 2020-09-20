@@ -34,7 +34,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   startTime() async {
-    var _duration = new Duration(seconds: 10);
+    var _duration = new Duration(seconds: 5);
     return new Timer(_duration, navigationPage);
   }
 
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context, MaterialPageRoute(builder: (BuildContext ctx) => Initial()));
     } else {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (BuildContext ctx) => Login()));
+          context, MaterialPageRoute(builder: (BuildContext ctx) => LandingScreen()));
     }
   }
 
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return new Scaffold(
       // backgroundColor: Color(0xFF670e1e),
       body: new Center(
-        child: Image.asset("assets/images/Mbj.png", height: 500, width: 400),
+        child: Image.asset("assets/images/Mbj.png", height: 300, width: 300),
       ),
     );
   }
