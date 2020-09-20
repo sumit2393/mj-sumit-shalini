@@ -72,14 +72,8 @@ class _SignupState extends State<Signup> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(top: 90, bottom: 20),
-                        child: const Text("Information",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600)),
                       ),
-                      const Text("We are Verifying your details, Your account will be activated in next 1-2 working days",
+                      const Text("We are Verifying your details, Your account will be activated in next 1-2 working days.",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white)),
                       Container(

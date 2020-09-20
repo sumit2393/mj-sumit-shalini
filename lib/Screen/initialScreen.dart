@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_mbj/Screen/AboutUs.dart';
 import 'package:flutter_app_mbj/Screen/FAQ.dart';
+import 'package:flutter_app_mbj/Screen/Terms&Condition.dart';
 import './Home.dart';
 
 import './Wishlist.dart';
@@ -10,7 +11,8 @@ import './searchproduct.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home.dart';
-import 'productdetail.dart';
+import './product.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 List<dynamic> tabsdata = [
@@ -45,11 +47,11 @@ List<dynamic> tabsdata = [
 ];
 
 const drawerdata = [
-  {"name": "Profile", "moveto": ""},
-  {"name": "Collection", "moveto": ""},
-  {"name": "Products", "moveto": ""},
-  {"name": "About", "moveto": ""},
-  {"name": "Contact us", "moveto": ""},
+  {"title": "Profile", "moveto": ""},
+  {"title": "Collection", "moveto": ""},
+  {"title": "Products", "moveto": ""},
+  {"title": "About", "moveto": ""},
+  {"title": "Contact us", "moveto": ""},
 ];
 
 class Initial extends StatefulWidget {
@@ -73,23 +75,29 @@ class _InitialState extends State<Initial> {
       "image": "assets/images/drawer/Insta.png",
       "url": "https://instagram.com/thehouseofmbj?igshid=gm88kie4g0m7"
     },
-    {"image": "assets/images/drawer/YOUTUBE.png", "url": ""},
+    {"image": "assets/images/drawer/YOUTUBE.png", "url": "https://www.youtube.com/channel/UCICmKZgd6wuGfdfINkFssBw"},
   ];
   List expansionlist = [
     {
-      "name": "GOLD COLLECTION",
-      "goto": Home(),
-      "licon": "assets/images/drawer/Gold.png"
+      "title": "GOLD COLLECTION",
+      "goto": ProduclList(),
+      "licon": "assets/images/drawer/Gold.png",
+      "id": 3,
+      "name": "Gold"
     },
     {
-      "name": "DIAMOND COLLECTION",
-      "goto": Home(),
-      "licon": "assets/images/drawer/Diamond.png"
+      "title": "DIAMOND COLLECTION",
+      "goto": ProduclList(),
+      "licon": "assets/images/drawer/Diamond.png",
+      "id": 2,
+      "name": "Diamond"
     },
     {
-      "name": "POLKI COLLECTION",
-      "goto": Home(),
-      "licon": "assets/images/drawer/Polki.png"
+      "title": "POLKI COLLECTION",
+      "goto": ProduclList(),
+      "licon": "assets/images/drawer/Polki.png",
+      "id": 1,
+      "name": "Polki"
     }
   ];
 
@@ -165,61 +173,62 @@ class _InitialState extends State<Initial> {
             width: MediaQuery.of(context).size.width - 80,
             child: Drawer(
                 child: ListView(
-              padding: EdgeInsets.only(top: 0),
-              children: <Widget>[
-                buildDrawer(context),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: ExpansionTile(
-                      trailing: isexpnaded
-                          ? Icon(
-                              Icons.book,
-                              size: 14,
-                            )
-                          : Image.asset("assets/images/drawer/dropdown.png",
+                  padding: EdgeInsets.only(top: 0),
+                  children: <Widget>[
+                    buildDrawer(context),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: ExpansionTile(
+                          trailing: isexpnaded
+                              ? Icon(
+                            Icons.arrow_drop_down,
+                            size: 16,
+                            color: Theme.of(context).primaryColor,
+                          )
+                              : Image.asset("assets/images/drawer/dropdown.png",
                               height: 14),
-                      onExpansionChanged: (bool expanded) {
-                        setState(() {
-                          isexpnaded = expanded;
-                        });
-                      },
-                      title: Labelnavigation(info: {
-                        "name": "OUR COLLECTION",
-                        "goto": "",
-                        "licon": "assets/images/drawer/Jewellery_Icon.png"
-                      }),
-                      children: expansionlist
-                          .map((e) => buildListTile(context, e))
-                          .toList()),
-                ),
-                buildListTile(context, {
-                  "name": "NEW ARRIVAL",
-                  "goto": Home(),
-                  "licon": "assets/images/drawer/New_Arrival.png"
-                }),
-                buildListTile(context, {
-                  "name": "ABOUT US",
-                  "goto": About(),
-                  "licon": "assets/images/drawer/About_us.png"
-                }),
-                buildListTile(context, {
-                  "name": "FAQS",
-                  "goto": FAQ(),
-                  "licon": "assets/images/drawer/FAQ.png"
-                }),
-                buildListTile(context, {
-                  "name": "TERMS & CONDITIONS",
-                  "goto": FAQ(),
-                  "licon": "assets/images/drawer/Terms_Condition.png"
-                }),
-                buildListTile(context, {
-                  "name": "PROFILE",
-                  "goto": Profile_Screen(),
-                  "licon": "assets/images/drawer/Profile.png"
-                }),
-                socialContainer(context)
-              ],
-            )),
+                          onExpansionChanged: (bool expanded) {
+                            setState(() {
+                              isexpnaded = expanded;
+                            });
+                          },
+                          title: Labelnavigation(info: {
+                            "name": "",
+                            "title": "OUR COLLECTION",
+                            "goto": "",
+                            "licon": "assets/images/drawer/Jewellery_Icon.png"
+                          }),
+                          children: expansionlist
+                              .map((e) => buildListTile(context, e))
+                              .toList()),
+                    ),
+                    buildListTile(context, {
+                      "name": "",
+                      "title": "ABOUT US",
+                      "goto": About(),
+                      "licon": "assets/images/drawer/About_us.png"
+                    }),
+                    buildListTile(context, {
+                      "name": "",
+                      "title": "FAQs",
+                      "goto": FAQ(),
+                      "licon": "assets/images/drawer/FAQ.png"
+                    }),
+                    buildListTile(context, {
+                      "name": "",
+                      "title": "TERMS & CONDITIONS",
+                      "goto": Terms(),
+                      "licon": "assets/images/drawer/Terms_Condition.png"
+                    }),
+                    buildListTile(context, {
+                      "name": "",
+                      "title": "PROFILE",
+                      "goto": Profile_Screen(),
+                      "licon": "assets/images/drawer/Profile.png"
+                    }),
+                    socialContainer(context)
+                  ],
+                )),
           )),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -228,12 +237,12 @@ class _InitialState extends State<Initial> {
         type: BottomNavigationBarType.fixed,
         items: tabsdata
             .map((e) => BottomNavigationBarItem(
-                backgroundColor: Color(0xFF670e1e),
-                title: Text(""),
-                icon: Image.asset(
-                  e["icon"],
-                  height: 24,
-                )))
+            backgroundColor: Color(0xFF670e1e),
+            title: Text(""),
+            icon: Image.asset(
+              e["icon"],
+              height: 24,
+            )))
             .toList(),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -299,8 +308,14 @@ class _InitialState extends State<Initial> {
       title: Labelnavigation(info: info),
       onTap: () {
         Navigator.pop(context);
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => info["goto"]));
+        if (info["name"] == "") {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => info["goto"]));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  ProduclList(mdata: info, fromp: "initial")));
+        }
       },
     );
   }
@@ -312,21 +327,21 @@ class _InitialState extends State<Initial> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: socialitems
               .map((e) => GestureDetector(
-                    onTap: () async {
-                      if (await canLaunch(e["url"])) {
-                        await launch(e["url"]);
-                      } else {
-                        throw 'Could not launch ${e["url"]}';
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Image.asset(e["image"], height: 18),
-                    ),
-                  ))
+            onTap: () async {
+              if (await canLaunch(e["url"])) {
+                await launch(e["url"]);
+              } else {
+                throw 'Could not launch ${e["url"]}';
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(5)),
+              child: Image.asset(e["image"], height: 18),
+            ),
+          ))
               .toList()),
     );
   }
@@ -342,11 +357,11 @@ class Labelnavigation extends StatelessWidget {
       text: TextSpan(children: [
         WidgetSpan(
             child: Padding(
-          padding: const EdgeInsets.only(right: 14.0),
-          child: Image.asset(info["licon"], height: 18.0),
-        )),
+              padding: const EdgeInsets.only(right: 14.0),
+              child: Image.asset(info["licon"], height: 18.0),
+            )),
         TextSpan(
-            text: info["name"],
+            text: info["title"],
             style: TextStyle(
                 fontWeight: FontWeight.w500, fontSize: 12, color: Colors.black))
       ]),

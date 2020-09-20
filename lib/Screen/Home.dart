@@ -269,7 +269,9 @@ class _HomeState extends State<Home> {
                             Padding(
                                 padding: EdgeInsets.only(top: 12, bottom: 2),
                                 child: Text(
+
                                   categorieslist[index].name,
+                                  overflow:TextOverflow.ellipsis,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 12),
                                 )),

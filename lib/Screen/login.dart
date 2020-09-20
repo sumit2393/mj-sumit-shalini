@@ -242,7 +242,7 @@ class _LoginState extends State<Login> {
                                       children: <Widget>[
                                         Text(
                                           'CONFIRM',
-                                          style: TextStyle(color: Color(0xFF670e1e), fontSize: 18),
+                                          style: TextStyle(color: Color(0xFF670e1e), fontSize: 16),
                                         ),
                                       ],
                                     ),
