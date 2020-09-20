@@ -586,7 +586,7 @@ class _ProduclListstate extends State<ProduclList> {
                                                       color: Colors.white,
                                                       image: DecorationImage(
                                                           fit: BoxFit.cover,
-                                                          image: CachedNetworkImageProvider(
+                                                          image: NetworkImage(
                                                               productlist[index]
                                                                   .image
                                                                   .url,
