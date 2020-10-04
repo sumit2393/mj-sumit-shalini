@@ -15,7 +15,7 @@ class _AboutState extends State<About> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF670e1e),
-        title: const Text('About Us'),
+        title: const Text('Brand Story'),
       ),
       body:  WebView(
           initialUrl: 'http://portal.mbj.in/about',
@@ -23,7 +23,6 @@ class _AboutState extends State<About> {
             _controller.complete(webViewController);
           }
       ),
-
     );
   }
 }

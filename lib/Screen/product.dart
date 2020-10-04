@@ -4,7 +4,6 @@ import './productdetail.dart';
 import '../provider/httpservices.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProduclList extends StatefulWidget {
@@ -45,7 +44,6 @@ class _ProduclListstate extends State<ProduclList> {
       "icon": Icon(Icons.arrow_upward, color: Color(0xFF670e1e))
     },
   ];
-
 //  List<String> stones = ["Light", "heavy"];
   List<String> type = ["14", "18", "22", "24"];
   List<String> pricelist = [
@@ -56,7 +54,6 @@ class _ProduclListstate extends State<ProduclList> {
     "500001-1000000",
     "1000001-10000000"
   ];
-
   var _character = "";
 //  String dropdownstoneValue;
   String dropdownpriceValue;
@@ -122,7 +119,6 @@ class _ProduclListstate extends State<ProduclList> {
       })
     });
   }
-
   getFromApiCategories(id, change, initialPage) {
     print(" m calling");
     fetchCategories(id, userid, initialPage, orderby, orderway, price, carat)
@@ -154,10 +150,8 @@ class _ProduclListstate extends State<ProduclList> {
             productlist.addAll(value.allproducts);
           }),
         }
-    })
-        .catchError((e) => {print(e)});
+    }).catchError((e) => {print(e)});
   }
-
   addToWishlist(productid, isindex, isadded) {
     if (!isadded) {
       addWish(userid, productid).then((value) => {
@@ -187,7 +181,6 @@ class _ProduclListstate extends State<ProduclList> {
       });
     }
   }
-
   requestCall(productid) {
     requestCallback(userid, productid).then((value) => {
       if (value["status"] == "success")
@@ -196,7 +189,6 @@ class _ProduclListstate extends State<ProduclList> {
         {registerToast("Something went wrong")}
     });
   }
-
   demo() {
     productlist = [];
     initialPage = 1;
@@ -206,7 +198,6 @@ class _ProduclListstate extends State<ProduclList> {
       getfromproductapi(selectedId, initialPage);
     }
   }
-
   loadMore() {
     setState(() {
       bottomLoading = true;
@@ -271,7 +262,6 @@ class _ProduclListstate extends State<ProduclList> {
                       _controller.close();
                       print(_character);
                       orderby = 'tag_price';
-
                       if (_character == "Price High to Low") {
                         orderway = 'desc';
                       } else {
@@ -705,19 +695,19 @@ class _ProduclListstate extends State<ProduclList> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       filter({
-                        "name": "100%\nCertified",
+                        "name": "100% \nHalmark Jewellery",
                         "image": "assets/images/product/certified.png",
-                        "size": 12.0
+                        "size": 10.0
                       }),
                       filter({
-                        "name": "100%\nRefund",
+                        "name": "Refund Policy",
                         "image": "assets/images/product/return.png",
-                        "size": 12.0
+                        "size": 10.0
                       }),
                       filter({
-                        "name": "Free\nshipping",
+                        "name": "World Wide\nShipping",
                         "image": "assets/images/product/Free_Shipp.png",
-                        "size": 12.0
+                        "size": 10.0
                       }),
                     ]),
               ))

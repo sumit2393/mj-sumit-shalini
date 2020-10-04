@@ -99,7 +99,6 @@ class _SignupState extends State<Signup> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-
                       color: Color(0xFF670e1e),
                     ),
                     height: 60,
@@ -115,8 +114,6 @@ class _SignupState extends State<Signup> {
           shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0))
       );
-
-
 
     }else{
       List<dynamic> errors = data["errors"];
@@ -392,7 +389,6 @@ class _SignupState extends State<Signup> {
                                   ),
                                 ),
                                 SizedBox(height: 10,),
-
                                 Container(
                                   padding: EdgeInsets.only(top: 30, left: 10.0, right: 5.0),
                                   child: SizedBox(
@@ -474,7 +470,7 @@ class Contactbutton extends StatelessWidget {
               launch("tel://18001039500");
             } else {
               print("do message");
-              FlutterOpenWhatsapp.sendSingleMessage("918824760069", "Hello");
+              FlutterOpenWhatsapp.sendSingleMessage("918824760069", "");
             }
 
             Navigator.pop(context);

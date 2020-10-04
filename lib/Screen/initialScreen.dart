@@ -204,7 +204,7 @@ class _InitialState extends State<Initial> {
                     ),
                     buildListTile(context, {
                       "name": "",
-                      "title": "ABOUT US",
+                      "title": "Brand Story",
                       "goto": About(),
                       "licon": "assets/images/drawer/About_us.png"
                     }),

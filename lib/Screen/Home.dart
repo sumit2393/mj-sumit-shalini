@@ -402,7 +402,7 @@ class _HomeState extends State<Home> {
                                             children: <Widget>[
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    top: 35.0),
+                                                    top: 45.0),
                                                 child: Text(
                                                   "The House of MBJ Bride",
                                                   style: TextStyle(
@@ -412,14 +412,14 @@ class _HomeState extends State<Home> {
                                                           FontWeight.bold),
                                                 ),
                                               ),
-                                              SizedBox(height: 5),
-                                              Text("\u201D",
+                                              SizedBox(height: 10),
+                                            /*  Text("\u201D",
                                                   style: TextStyle(
                                                       fontSize: 28,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color: Theme.of(context)
-                                                          .primaryColor)),
+                                                          .primaryColor)),*/
                                               Expanded(
                                                 child: Padding(
                                                     padding:
@@ -427,7 +427,7 @@ class _HomeState extends State<Home> {
                                                             horizontal: 5),
                                                     child: Text(
                                                       testimonial[index].caption,
-                                                      maxLines: 3,
+                                                      maxLines: 5,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: TextStyle(
@@ -435,7 +435,7 @@ class _HomeState extends State<Home> {
                                                           color: Colors.grey),
                                                     )),
                                               ),
-                                              RaisedButton(
+                                              /*RaisedButton(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 40),
                                                 shape: RoundedRectangleBorder(
@@ -450,7 +450,7 @@ class _HomeState extends State<Home> {
                                                   style:
                                                       TextStyle(fontSize: 11),
                                                 ),
-                                              )
+                                              )*/
                                             ])
                                       ],
                                     ),

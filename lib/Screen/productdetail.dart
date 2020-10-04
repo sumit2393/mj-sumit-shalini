@@ -303,7 +303,7 @@ class ProductDetailState extends State<ProductDetail> {
                     children: <Widget>[
                       Column(children: [
                         Text(
-                          "COLLECTION",
+                          "COLLECT ION",
                           style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
@@ -369,15 +369,16 @@ class ProductDetailState extends State<ProductDetail> {
                   children: <Widget>[
 
                     quantity({
-                      "title": "MATERIALS",
-                      "value": widget.productdata.mainCategory.name,
+                      "title": "METAL",
+                    //  "value": widget.productdata.mainCategory.name,
+                        "value": "GOLD",
                       "image": "assets/images/product/material.png"
                     }),
-                    widget.productdata.diamondPieces != 0
+                   /* widget.productdata.diamondPieces != 0
                         ? quantity({
                       "title": "DIAMOND PIECES",
                       "amount": widget.productdata.diamondPieces.toString()
-                    }) : Container(),
+                    }) : Container(),*/
                     quantity({
                       "title": "PRODUCT WEIGHT",
                       "value": widget.productdata.grossWeight,
@@ -453,11 +454,19 @@ class ProductDetailState extends State<ProductDetail> {
                     "title": "POLKI PIECES",
                     "amount": widget.productdata.polkiPieces.toString()
                   })
+
+                      : Container(),
+                  widget.productdata.carat != 0
+                      ? rateWidget({
+                    "title": "CARAT",
+                    "amount": widget.productdata.carat.toString()
+                  })
                       : Container(),
                   rateWidget({
                     "title": "TAG PRICE",
                     "amount": widget.productdata.tagPrice.toString()
                   }),
+
                 ]))
           ],
         ),
@@ -518,7 +527,7 @@ class Contactbutton extends StatelessWidget {
               launch("tel://18001039500");
             } else {
               print("do message");
-              FlutterOpenWhatsapp.sendSingleMessage("918824760069", "Hello");
+              FlutterOpenWhatsapp.sendSingleMessage("918824760069", "");
             }
 
             Navigator.pop(context);
