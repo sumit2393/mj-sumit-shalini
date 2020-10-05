@@ -31,11 +31,11 @@ List<dynamic> tabsdata = [
     "page": Wishlist(),
     "title": Text("Wishlist")
   },
-  {
-    "icon": "assets/images/home/Offer_ICon.png",
-    "page": Home(),
-    "title": Text("Wishlist")
-  },
+  // {
+  //   "icon": "assets/images/home/Offer_ICon.png",
+  //   "page": Home(),
+  //   "title": Text("Wishlist")
+  // },
 
   {
     "icon": "assets/images/home/Bell_Icon.png",
@@ -75,7 +75,10 @@ class _InitialState extends State<Initial> {
       "image": "assets/images/drawer/Insta.png",
       "url": "https://instagram.com/thehouseofmbj?igshid=gm88kie4g0m7"
     },
-    {"image": "assets/images/drawer/YOUTUBE.png", "url": "https://www.youtube.com/channel/UCICmKZgd6wuGfdfINkFssBw"},
+    {
+      "image": "assets/images/drawer/YOUTUBE.png",
+      "url": "https://www.youtube.com/channel/UCICmKZgd6wuGfdfINkFssBw"
+    },
   ];
   List expansionlist = [
     {
@@ -173,62 +176,62 @@ class _InitialState extends State<Initial> {
             width: MediaQuery.of(context).size.width - 80,
             child: Drawer(
                 child: ListView(
-                  padding: EdgeInsets.only(top: 0),
-                  children: <Widget>[
-                    buildDrawer(context),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: ExpansionTile(
-                          trailing: isexpnaded
-                              ? Icon(
-                            Icons.arrow_drop_down,
-                            size: 16,
-                            color: Theme.of(context).primaryColor,
-                          )
-                              : Image.asset("assets/images/drawer/dropdown.png",
+              padding: EdgeInsets.only(top: 0),
+              children: <Widget>[
+                buildDrawer(context),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: ExpansionTile(
+                      trailing: isexpnaded
+                          ? Icon(
+                              Icons.arrow_drop_down,
+                              size: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          : Image.asset("assets/images/drawer/dropdown.png",
                               height: 14),
-                          onExpansionChanged: (bool expanded) {
-                            setState(() {
-                              isexpnaded = expanded;
-                            });
-                          },
-                          title: Labelnavigation(info: {
-                            "name": "",
-                            "title": "OUR COLLECTION",
-                            "goto": "",
-                            "licon": "assets/images/drawer/Jewellery_Icon.png"
-                          }),
-                          children: expansionlist
-                              .map((e) => buildListTile(context, e))
-                              .toList()),
-                    ),
-                    buildListTile(context, {
-                      "name": "",
-                      "title": "Brand Story",
-                      "goto": About(),
-                      "licon": "assets/images/drawer/About_us.png"
-                    }),
-                    buildListTile(context, {
-                      "name": "",
-                      "title": "FAQs",
-                      "goto": FAQ(),
-                      "licon": "assets/images/drawer/FAQ.png"
-                    }),
-                    buildListTile(context, {
-                      "name": "",
-                      "title": "TERMS & CONDITIONS",
-                      "goto": Terms(),
-                      "licon": "assets/images/drawer/Terms_Condition.png"
-                    }),
-                    buildListTile(context, {
-                      "name": "",
-                      "title": "PROFILE",
-                      "goto": Profile_Screen(),
-                      "licon": "assets/images/drawer/Profile.png"
-                    }),
-                    socialContainer(context)
-                  ],
-                )),
+                      onExpansionChanged: (bool expanded) {
+                        setState(() {
+                          isexpnaded = expanded;
+                        });
+                      },
+                      title: Labelnavigation(info: {
+                        "name": "",
+                        "title": "OUR COLLECTION",
+                        "goto": "",
+                        "licon": "assets/images/drawer/Jewellery_Icon.png"
+                      }),
+                      children: expansionlist
+                          .map((e) => buildListTile(context, e))
+                          .toList()),
+                ),
+                buildListTile(context, {
+                  "name": "",
+                  "title": "Brand Story",
+                  "goto": About(),
+                  "licon": "assets/images/drawer/About_us.png"
+                }),
+                buildListTile(context, {
+                  "name": "",
+                  "title": "FAQs",
+                  "goto": FAQ(),
+                  "licon": "assets/images/drawer/FAQ.png"
+                }),
+                buildListTile(context, {
+                  "name": "",
+                  "title": "TERMS & CONDITIONS",
+                  "goto": Terms(),
+                  "licon": "assets/images/drawer/Terms_Condition.png"
+                }),
+                buildListTile(context, {
+                  "name": "",
+                  "title": "PROFILE",
+                  "goto": Profile_Screen(),
+                  "licon": "assets/images/drawer/Profile.png"
+                }),
+                socialContainer(context)
+              ],
+            )),
           )),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -237,12 +240,12 @@ class _InitialState extends State<Initial> {
         type: BottomNavigationBarType.fixed,
         items: tabsdata
             .map((e) => BottomNavigationBarItem(
-            backgroundColor: Color(0xFF670e1e),
-            title: Text(""),
-            icon: Image.asset(
-              e["icon"],
-              height: 24,
-            )))
+                backgroundColor: Color(0xFF670e1e),
+                title: Text(""),
+                icon: Image.asset(
+                  e["icon"],
+                  height: 24,
+                )))
             .toList(),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -267,7 +270,7 @@ class _InitialState extends State<Initial> {
                   Navigator.pop(context);
                 },
               ),
-             /* FlatButton.icon(
+              /* FlatButton.icon(
                   onPressed: null,
                   icon: Icon(
                     Icons.edit,
@@ -327,21 +330,21 @@ class _InitialState extends State<Initial> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: socialitems
               .map((e) => GestureDetector(
-            onTap: () async {
-              if (await canLaunch(e["url"])) {
-                await launch(e["url"]);
-              } else {
-                throw 'Could not launch ${e["url"]}';
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Image.asset(e["image"], height: 18),
-            ),
-          ))
+                    onTap: () async {
+                      if (await canLaunch(e["url"])) {
+                        await launch(e["url"]);
+                      } else {
+                        throw 'Could not launch ${e["url"]}';
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Image.asset(e["image"], height: 18),
+                    ),
+                  ))
               .toList()),
     );
   }
@@ -357,9 +360,9 @@ class Labelnavigation extends StatelessWidget {
       text: TextSpan(children: [
         WidgetSpan(
             child: Padding(
-              padding: const EdgeInsets.only(right: 14.0),
-              child: Image.asset(info["licon"], height: 18.0),
-            )),
+          padding: const EdgeInsets.only(right: 14.0),
+          child: Image.asset(info["licon"], height: 18.0),
+        )),
         TextSpan(
             text: info["title"],
             style: TextStyle(

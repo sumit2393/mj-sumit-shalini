@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   bool loading = false;
   int _currentPageIndex = 0;
@@ -18,17 +19,7 @@ class _HomeState extends State<Home> {
   List testimonial = [];
   List maicategories = [];
   List categorieslist = [];
-  // var carousellist = [
-  //   {"image": "assets/images/Homepage/1.png", "name": "Necklace"},
-  //   {"image": "assets/images/Homepage/1.png", "name": "Earrings"},
-  //   {"image": "assets/images/Homepage/1.png", "name": "Bangles"},
-  // ];
-  // var categorieslist = [
-  //   {"image": "assets/images/Homepage/6.png", "name": "Necklace"},
-  //   {"image": "assets/images/dummybrace.jpg", "name": "Earrings"},
-  //   {"image": "assets/images/dummybangles.jpeg", "name": "Bangles"},
-  //   {"image": "assets/images/dummybrace.jpg", "name": "Rings"},
-  // ];
+
   @override
   void initState() {
     super.initState();
@@ -43,17 +34,14 @@ class _HomeState extends State<Home> {
           }),
           carousellist = value.upcomingDesigns,
           testimonial = value.testimonial,
-          print(testimonial)
         });
   }
+
   getUserid() async {
-    print("userid function called");
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userid = preferences.getInt("id");
-    print("userid" + userid.toString());
+
     fetchFeaturedProducts(userid).then((value) async => {
-          print("featured products"),
-          print(value.productlist),
           setState(() {
             categorieslist = value.productlist;
             categorieslist.map((e) => print("dsds" + e));
@@ -61,6 +49,7 @@ class _HomeState extends State<Home> {
           value.productlist.map((e) => print("ewe" + e.name))
         });
   }
+
   makeCall(productid) {
     requestCallback(userid, productid).then((value) {
       if (value["status"] == "success") {
@@ -70,6 +59,7 @@ class _HomeState extends State<Home> {
       }
     });
   }
+
   registerToast(String toast) {
     return Fluttertoast.showToast(
         msg: toast,
@@ -190,7 +180,7 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          Expanded( 
+                          Expanded(
                             child: Container(
                                 margin: EdgeInsets.only(right: 5),
                                 height: 250,
@@ -264,14 +254,14 @@ class _HomeState extends State<Home> {
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                               categorieslist[index]
-                                                  .image.url)))),
+                                                  .image
+                                                  .url)))),
                             )),
                             Padding(
                                 padding: EdgeInsets.only(top: 12, bottom: 2),
                                 child: Text(
-
                                   categorieslist[index].name,
-                                  overflow:TextOverflow.ellipsis,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 12),
                                 )),
@@ -354,7 +344,8 @@ class _HomeState extends State<Home> {
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: CachedNetworkImageProvider(
-                                                testimonial[index].image_path))),
+                                                testimonial[index]
+                                                    .image_path))),
                                   )),
                                   Expanded(
                                       child: Container(
@@ -385,7 +376,7 @@ class _HomeState extends State<Home> {
                                                   color: Theme.of(context)
                                                       .primaryColor),
                                               child: Text(
-                                                  testimonial[index].name,
+                                                testimonial[index].name,
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white,
@@ -413,7 +404,7 @@ class _HomeState extends State<Home> {
                                                 ),
                                               ),
                                               SizedBox(height: 10),
-                                            /*  Text("\u201D",
+                                              /*  Text("\u201D",
                                                   style: TextStyle(
                                                       fontSize: 28,
                                                       fontWeight:
@@ -426,7 +417,8 @@ class _HomeState extends State<Home> {
                                                         EdgeInsets.symmetric(
                                                             horizontal: 5),
                                                     child: Text(
-                                                      testimonial[index].caption,
+                                                      testimonial[index]
+                                                          .caption,
                                                       maxLines: 5,
                                                       overflow:
                                                           TextOverflow.ellipsis,

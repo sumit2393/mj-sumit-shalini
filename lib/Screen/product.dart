@@ -63,15 +63,11 @@ class _ProduclListstate extends State<ProduclList> {
   @override
   void initState() {
     super.initState();
-    print("re==>>>");
-    print(widget.mdata);
 
     if (widget.fromp == "initial") {
-      print("in if part");
       categoryName = widget.mdata["name"];
       categoryId = widget.mdata["id"];
     } else {
-      print("in else ");
       categoryName = widget.mdata.name;
       categoryId = widget.mdata.id;
     }
@@ -87,7 +83,6 @@ class _ProduclListstate extends State<ProduclList> {
   }
 
   getCategories(id, change) {
-    print('get Category------');
     setState(() {
       loading = true;
     });
@@ -101,7 +96,6 @@ class _ProduclListstate extends State<ProduclList> {
       bartitle = name;
     });
     if (name == "All") {
-      print('categoryId' + categoryId.toString());
       getCategories(categoryId, "no");
     } else {
       getfromproductapi(id, 0);
@@ -111,84 +105,88 @@ class _ProduclListstate extends State<ProduclList> {
   getfromproductapi(id, pagecount) {
     fetchProductlist(id, userid, pagecount, orderby, orderway, price, carat)
         .then((value) => {
-      nexturl = value.next_page_url,
-      setState(() {
-        productlist.addAll(value.data);
-        loading = false;
-        bottomLoading = false;
-      })
-    });
+              nexturl = value.next_page_url,
+              setState(() {
+                productlist.addAll(value.data);
+                loading = false;
+                bottomLoading = false;
+              })
+            });
   }
+
   getFromApiCategories(id, change, initialPage) {
-    print(" m calling");
     fetchCategories(id, userid, initialPage, orderby, orderway, price, carat)
         .then((value) => {
-      allCate = new Subcategories.fromJson({
-        "id": -1,
-        "mainCategoryId": 1,
-        "imagePath": "",
-        "name": "All",
-        "createdAt": "",
-        "updatedAt": ""
-      }),
-      value.subcategories.insert(0, allCate),
-      nexturl = value.next_page_url,
-      if (change == "yes")
-        {
-          setState(() {
-            bottomLoading = false;
-            loading = false;
-            productlist.addAll(value.allproducts);
-            categoriesname = value.subcategories;
-          }),
-        }
-      else
-        {
-          setState(() {
-            bottomLoading = false;
-            loading = false;
-            productlist.addAll(value.allproducts);
-          }),
-        }
-    }).catchError((e) => {print(e)});
+              allCate = new Subcategories.fromJson({
+                "id": -1,
+                "mainCategoryId": 1,
+                "imagePath": "",
+                "name": "All",
+                "createdAt": "",
+                "updatedAt": ""
+              }),
+              value.subcategories.insert(0, allCate),
+              nexturl = value.next_page_url,
+              if (change == "yes")
+                {
+                  setState(() {
+                    bottomLoading = false;
+                    loading = false;
+                    productlist.addAll(value.allproducts);
+                    categoriesname = value.subcategories;
+                  }),
+                }
+              else
+                {
+                  setState(() {
+                    bottomLoading = false;
+                    loading = false;
+                    productlist.addAll(value.allproducts);
+                  }),
+                }
+            })
+        .catchError((e) => {print(e)});
   }
+
   addToWishlist(productid, isindex, isadded) {
     if (!isadded) {
       addWish(userid, productid).then((value) => {
-        if (value["status"] == "success")
-          {
-            registerToast(value["data"]["message"]),
-            setState(() {
-              productlist[isindex].addedToWishList = true;
-            })
-          }
-        else
-          {registerToast("Something went wrong Please try again")}
-      });
+            if (value["status"] == "success")
+              {
+                registerToast(value["data"]["message"]),
+                setState(() {
+                  productlist[isindex].addedToWishList = true;
+                })
+              }
+            else
+              {registerToast("Something went wrong Please try again")}
+          });
     } else {
       removeWish(userid.toString(), productid.toString()).then((value) => {
-        if (value["status"] == "success")
-          {
-            setState(() {
-              registerToast(value["data"]["message"]);
-              setState(() {
-                productlist[isindex].addedToWishList = false;
-              });
-            })
-          }
-        else
-          {registerToast("Something went wrong")}
-      });
+            if (value["status"] == "success")
+              {
+                setState(() {
+                  registerToast(value["data"]["message"]);
+                  setState(() {
+                    productlist[isindex].addedToWishList = false;
+                  });
+                })
+              }
+            else
+              {registerToast("Something went wrong")}
+          });
     }
   }
+
   requestCall(productid) {
     requestCallback(userid, productid).then((value) => {
-      if (value["status"] == "success")
-        {registerToast(value["data"]["message"])}
-      else
-        {registerToast("Something went wrong")}
-    });
+          if (value["status"] == "success")
+            {registerToast(value["data"]["message"])}
+          else
+            {registerToast("Something went wrong")}
+        });
   }
+
   demo() {
     productlist = [];
     initialPage = 1;
@@ -198,15 +196,14 @@ class _ProduclListstate extends State<ProduclList> {
       getfromproductapi(selectedId, initialPage);
     }
   }
+
   loadMore() {
     setState(() {
       bottomLoading = true;
     });
     initialPage = initialPage + 1;
-    print("load more function called${categoryId}");
 
     if (selectedId == -1) {
-      print("in if part");
       getFromApiCategories(categoryId, 'no', initialPage);
     } else {
       getfromproductapi(selectedId, initialPage);
@@ -224,7 +221,7 @@ class _ProduclListstate extends State<ProduclList> {
 
   openSort() async {
     _controller = await scaffoldState.currentState.showBottomSheet(
-          (BuildContext context) {
+      (BuildContext context) {
         return Wrap(
           alignment: WrapAlignment.center,
           children: <Widget>[
@@ -260,7 +257,7 @@ class _ProduclListstate extends State<ProduclList> {
                     onPressed: () {
                       // Navigator.pop(context);
                       _controller.close();
-                      print(_character);
+
                       orderby = 'tag_price';
                       if (_character == "Price High to Low") {
                         orderway = 'desc';
@@ -287,8 +284,8 @@ class _ProduclListstate extends State<ProduclList> {
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         leading:
-        //Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
-        IconButton(
+            //Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
+            IconButton(
           padding: EdgeInsets.zero,
           icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
           onPressed: () {
@@ -328,48 +325,48 @@ class _ProduclListstate extends State<ProduclList> {
     }
 
     _controller = scaffoldState.currentState.showBottomSheet(
-            (BuildContext context) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 20),
-            child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
-              sheetHeading(context, "Filters"),
-              dropDown(
-                  context,
-                  {"hinttext": "Price", "list": pricelist, "changevalue": setprice},
-                  dropdownpriceValue),
+        (BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 20),
+        child: Wrap(alignment: WrapAlignment.center, children: <Widget>[
+          sheetHeading(context, "Filters"),
+          dropDown(
+              context,
+              {"hinttext": "Price", "list": pricelist, "changevalue": setprice},
+              dropdownpriceValue),
 //          dropDown(
 //              context,
 //              {"hinttext": "Stones", "list": stones, "changevalue": setstone},
 //              dropdownstoneValue),
-              dropDown(
-                  context,
-                  {"hinttext": "Carat", "list": type, "changevalue": settype},
-                  dropdowntypeValue),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 60.0, bottom: 20, left: 16, right: 16),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        if (dropdownpriceValue != null) {
-                          price = dropdownpriceValue;
-                        }
-                        if (dropdowntypeValue != null) {
-                          carat = int.parse(dropdowntypeValue);
-                        }
-                        demo();
-                      },
-                      child: Text("APPLY"),
-                    )),
-              )
-            ]),
-          );
-        },
+          dropDown(
+              context,
+              {"hinttext": "Carat", "list": type, "changevalue": settype},
+              dropdowntypeValue),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 60.0, bottom: 20, left: 16, right: 16),
+            child: SizedBox(
+                width: double.infinity,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if (dropdownpriceValue != null) {
+                      price = dropdownpriceValue;
+                    }
+                    if (dropdowntypeValue != null) {
+                      carat = int.parse(dropdowntypeValue);
+                    }
+                    demo();
+                  },
+                  child: Text("APPLY"),
+                )),
+          )
+        ]),
+      );
+    },
         backgroundColor: Colors.grey[200],
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)));
   }
 
   Container dropDown(BuildContext context, dropdata, setv) {
@@ -424,7 +421,7 @@ class _ProduclListstate extends State<ProduclList> {
           NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
                 if (scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent &&
+                        scrollInfo.metrics.maxScrollExtent &&
                     nexturl != null) {
                   loadMore();
                 }
@@ -441,10 +438,10 @@ class _ProduclListstate extends State<ProduclList> {
                     //             scale: 30.0))),
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: new AssetImage(
-                              "assets/images/product/background.jpg"),
-                        )),
+                      fit: BoxFit.cover,
+                      image: new AssetImage(
+                          "assets/images/product/background.jpg"),
+                    )),
                     child: Stack(children: <Widget>[
                       Positioned.fill(
                         bottom: 50,
@@ -453,7 +450,7 @@ class _ProduclListstate extends State<ProduclList> {
                             child: Text(
                               categoryName,
                               style:
-                              TextStyle(color: Colors.white, fontSize: 26),
+                                  TextStyle(color: Colors.white, fontSize: 26),
                             )),
                       ),
                       Positioned(
@@ -536,150 +533,150 @@ class _ProduclListstate extends State<ProduclList> {
                       )),
                   loading
                       ? Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.white),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ))
+                          child: CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ))
                       : productlist.length != 0
-                      ? Container(
-                    color: Theme.of(context).primaryColor,
-                    child: GridView.builder(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 20),
-                        itemCount: productlist.length,
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 18,
-                          crossAxisSpacing: 16,
-                          crossAxisCount: 2,
-                          childAspectRatio: MediaQuery.of(context)
-                              .size
-                              .width /
-                              (MediaQuery.of(context).size.height -
-                                  200),
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(25),
-                                color: Colors.white,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                              child: Stack(children: <Widget>[
-                                Column(children: <Widget>[
-                                  Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetail(
-                                                          productdata:
-                                                          productlist[
-                                                          index])));
-                                        },
-                                        child: Container(
-                                            margin:
-                                            EdgeInsets.only(top: 20),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                image: DecorationImage(
-                                                    fit: BoxFit.contain,
-                                                    image: NetworkImage(
-                                                        productlist[index]
-                                                            .image
-                                                            .url,
-                                                        scale: 30.0)))),
-                                      )),
-                                  // Text(productlist[index].name),
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 7),
-                                      child: Text(
-                                        productlist[index].name,
-                                        maxLines: 1,
-                                        overflow:
-                                        TextOverflow.ellipsis,
-                                        style:
-                                        TextStyle(fontSize: 12),
-                                      )),
-                                  Text(
-                                      "\u20B9" +
-                                          productlist[index]
-                                              .tagPrice
-                                              .toString(),
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                          ? Container(
+                              color: Theme.of(context).primaryColor,
+                              child: GridView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 20),
+                                  itemCount: productlist.length,
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    mainAxisSpacing: 18,
+                                    crossAxisSpacing: 16,
+                                    crossAxisCount: 2,
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height -
+                                            200),
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          color: Colors.white,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 12),
+                                        child: Stack(children: <Widget>[
+                                          Column(children: <Widget>[
+                                            Expanded(
+                                                child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetail(
+                                                                productdata:
+                                                                    productlist[
+                                                                        index])));
+                                              },
+                                              child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 20),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.contain,
+                                                          image: NetworkImage(
+                                                              productlist[index]
+                                                                  .image
+                                                                  .url,
+                                                              scale: 30.0)))),
+                                            )),
+                                            // Text(productlist[index].name),
+                                            Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 7),
+                                                child: Text(
+                                                  productlist[index].name,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                )),
+                                            Text(
+                                                "\u20B9" +
+                                                    productlist[index]
+                                                        .tagPrice
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
 
-                                  ButtonTheme(
-                                      minWidth: 200.0,
-                                      height: 28.0,
-                                      buttonColor: Theme.of(context)
-                                          .primaryColor,
-                                      child: RaisedButton(
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                15.0),
-                                          ),
-                                          child: Text(
-                                            "REQUEST A CALLBACK",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 8),
-                                          ),
-                                          onPressed: () {
-                                            requestCall(
-                                                productlist[index]
-                                                    .id);
-                                          }))
-                                ]),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        addToWishlist(
-                                            productlist[index].id,
-                                            index,
-                                            productlist[index]
-                                                .addedToWishList);
-                                      },
-                                      child: Icon(Icons.favorite,
-                                          size: 16,
-                                          color: productlist[index]
-                                              .addedToWishList
-                                              ? Colors.red
-                                              : Colors.grey[500]),
-                                    )),
-                              ]));
-                        }),
-                  )
-                      : Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30),
-                      child: Text(
-                        "No Products available",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
+                                            ButtonTheme(
+                                                minWidth: 200.0,
+                                                height: 28.0,
+                                                buttonColor: Theme.of(context)
+                                                    .primaryColor,
+                                                child: RaisedButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child: Text(
+                                                      "REQUEST A CALLBACK",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 8),
+                                                    ),
+                                                    onPressed: () {
+                                                      requestCall(
+                                                          productlist[index]
+                                                              .id);
+                                                    }))
+                                          ]),
+                                          Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  addToWishlist(
+                                                      productlist[index].id,
+                                                      index,
+                                                      productlist[index]
+                                                          .addedToWishList);
+                                                },
+                                                child: Icon(Icons.favorite,
+                                                    size: 16,
+                                                    color: productlist[index]
+                                                            .addedToWishList
+                                                        ? Colors.red
+                                                        : Colors.grey[500]),
+                                              )),
+                                        ]));
+                                  }),
+                            )
+                          : Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                child: Text(
+                                  "No Products available",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ),
                   bottomLoading
                       ? Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.white),
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ))
+                          child: CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ))
                       : Container()
                 ],
               )),

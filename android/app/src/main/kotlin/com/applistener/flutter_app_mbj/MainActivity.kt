@@ -1,4 +1,4 @@
-package com.applistener.flutter_app_mbj
+package com.mbj
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

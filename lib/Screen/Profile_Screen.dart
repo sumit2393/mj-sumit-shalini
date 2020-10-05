@@ -19,13 +19,13 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     super.initState();
     restore();
   }
+
   restore() async {
-    print("data called");
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     setState(() {
       userid = sharedPrefs.getInt("id");
       email = sharedPrefs.getString("email");
-      print(email);
+
       name = sharedPrefs.getString("name");
       phone = sharedPrefs.getString("phone");
       anniversary_date = sharedPrefs.getString("anniversary_date");
@@ -37,7 +37,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
+        padding: EdgeInsets.only(bottom: 18),
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 20, left: 20),
@@ -95,13 +96,12 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  '$name',
+                  name ?? 'MBj',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.w600),
                 ),
-
               ],
             ),
           ),
@@ -110,7 +110,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           ),
           Column(
             children: <Widget>[
-
               Container(
                 height: 40,
                 color: Colors.grey[300],
@@ -118,13 +117,15 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Row(
                   children: <Widget>[
-
-                    Icon(Icons.call,size: 12,),
+                    Icon(
+                      Icons.call,
+                      size: 12,
+                    ),
                     SizedBox(
                       width: 20,
                     ),
                     Text(
-                      "Phone:                     "+'$phone',
+                      "Phone:                     " + '$phone',
                       style: TextStyle(fontSize: 13),
                     )
                   ],
@@ -134,22 +135,22 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 height: 20,
               ),
               Container(
-
                 height: 40,
                 color: Colors.grey[300],
                 padding: EdgeInsets.only(left: 20, right: 20),
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Row(
-
                   children: <Widget>[
-                    Icon(Icons.email, size: 10,),
+                    Icon(
+                      Icons.email,
+                      size: 10,
+                    ),
                     SizedBox(
                       width: 20,
                     ),
-
                     Text(
-                      "Email:                      "+'$email',
-                      style: TextStyle(color: Colors.black,fontSize: 13),
+                      "Email:                      " + '$email',
+                      style: TextStyle(color: Colors.black, fontSize: 13),
                     )
                   ],
                 ),
@@ -164,7 +165,10 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.date_range,size: 12,),
+                    Icon(
+                      Icons.date_range,
+                      size: 12,
+                    ),
                     SizedBox(
                       width: 20,
                     ),
@@ -185,7 +189,10 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.date_range,size: 12,),
+                    Icon(
+                      Icons.date_range,
+                      size: 12,
+                    ),
                     SizedBox(
                       width: 20,
                     ),
@@ -199,38 +206,29 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               SizedBox(
                 height: 20,
               ),
-
-
               ButtonTheme(
                   minWidth: 200.0,
                   height: 40.0,
-                  buttonColor: Theme.of(context)
-                      .primaryColor,
+                  buttonColor: Theme.of(context).primaryColor,
                   child: RaisedButton(
-                      shape:
-                      RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(
-                            15.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: Text(
                         "Logout",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12),
+                        style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
-                        onPressed: () async {
-                          SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                          prefs?.clear();
-                          prefs.setBool('isLoggedIn', false);
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (BuildContext ctx) => LandingScreen()),
-                                  (r) => false);
-
-
-                        }))
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs?.clear();
+                        prefs.setBool('isLoggedIn', false);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext ctx) => LandingScreen()),
+                            (r) => false);
+                      }))
             ],
           )
           /* Container(
